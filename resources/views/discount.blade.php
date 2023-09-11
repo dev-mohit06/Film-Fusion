@@ -23,7 +23,8 @@
                 <div class="container">
                     <br>
                     <a style="cursor: pointer" type="submit" class="button button--flex" id="apply">Apply</a>
-                    <a href="{{ route('pay') }}" class="footer__copy-link" style="margin-left: 10px; cursor: pointer;" id="continue">Continue</a>
+                    <a href="{{ route('pay') }}" class="footer__copy-link" style="margin-left: 10px; cursor: pointer;"
+                        id="continue">Continue</a>
                 </div>
             </div>
 
@@ -31,11 +32,9 @@
         </div>
     </section>
 
-    @if (!session()->has('plan_name')){
-        {{ session()->put('plan_name',$planDetails['plan_name']) }}
-        {{ session()->put('plan_price',$planDetails['plan_price']) }}
-    }
-        
+    @if (!session()->has('plan_name'))
+        {{ session()->put('plan_name', $planDetails['plan_name']) }}
+        {{ session()->put('plan_price', $planDetails['plan_price']) }}
     @endif
 @endsection
 
@@ -76,7 +75,8 @@
 
                                 orignalPriceIP.css("text-decoration", "line-through");
                                 discountedPriceIP.html("₹" + response.data.discounted_price);
-                                applyedDiscountMessageIp.html("Applyed Discount is " + response.data.discounted_rate + "%");
+                                applyedDiscountMessageIp.html("Applyed Discount is " + response
+                                    .data.discounted_rate + "%");
 
                             } else if (response.message == 0) {
 
