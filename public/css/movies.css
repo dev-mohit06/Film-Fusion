@@ -1,0 +1,17 @@
+td img {
+    width: 100px !important; 
+    height: 150px !important;
+    margin-right: -3.5rem;
+    border-radius: .4rem !important;
+    vertical-align: middle;
+}
+
+.movie-title-font{
+    font-size: 1.2rem !important;
+    font-weight: bold;
+    width: 20%;
+}
+
+input::file-selector-button{
+    margin-top: 1rem;
+}

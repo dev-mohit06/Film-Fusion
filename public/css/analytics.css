@@ -1,0 +1,20 @@
+.count-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .8rem;
+    zoom: 1.03;
+}
+
+td img{
+    width: 100px !important;
+    height: 150px !important;
+}
+
+html{
+    overflow-y: hidden;
+}
+
+.table-parent{
+    height: 92vh;
+}
