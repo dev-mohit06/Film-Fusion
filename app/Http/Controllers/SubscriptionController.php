@@ -3,21 +3,84 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Stripe\Checkout\Session;
+use Carbon\Carbon;
 
 class SubscriptionController extends Controller
 {
-    public function pay(){
+    public function checkout()
+    {
+        $planName = session()->get('plan_name');
+        $planPrice = session()->get('plan_price');
+        
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        $session = Session::create([
+            'line_items' => [
+                [
+                    'price_data' => [
+                        'currency' => 'INR',
+                        'product_data' => [
+                            "name" => $planName,
+                        ],
+                        'unit_amount' => $planPrice * 100,
+                    ],
+                    'quantity' => 1,
+                ],
+            ],
+            'mode' => 'payment',
+            'success_url' => route('afterCheckout'),
+            'cancel_url' => route('pricing'),
+        ]);
 
-        if(session()->has('plan_price') || session()->has('plan_price')){
-            $planName = session()->get('plan_name');
-            $planPrice = session()->get('plan_price');
-    
+        return redirect($session->url);
+    }
+
+    public function afterCheckout(){
+
+        // Modify the session variable. it is define in AccountController file
+
+        $check = DB::table('users')->where('id','=',session()->get('id'))->update([
+            'subscription_status' => 1,
+        ]);
 
 
-            return $planPrice;
+        // It is all are coming from diffrent files
+        // The all session variable is use to store the value inside the subscriptions table, they all are use to maintain the record of user subscription
+        $userId = session()->get('id');
+        if(session()->has('offer_id')){
+            $offerId = session()->get('offer_id');
         }else{
-            return redirect()->back();
+            $offerId = null;
         }
+        $planId = session()->get('plan_id');
+        $purchaseDate = now();
+        $planDuration = session()->get('plan_duration');
+        $startingDate = Carbon::parse(now());
+        $expireData = $startingDate->addDay($planDuration);
 
+
+        DB::table('subscriptions')->insert([
+            'user_id' => $userId,
+            'offer_id' => $offerId,
+            'plan_id' => $planId,
+            'purchase_date' => $purchaseDate,
+            'expire_date' => $expireData,
+            'plan_duration' => $planDuration,
+            'is_active' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        
+        // removing unnessery session variables
+        session()->remove('offer_id');
+        session()->remove('plan_id');
+        session()->remove('plan_duration');
+        session()->remove('plan_name');
+        session()->remove('plan_price');
+
+        // Update the current subscription status.
+        session()->put('subscription_status',1);
+        return redirect()->route('user.home');
     }
 }

@@ -54,7 +54,7 @@ class DiscountController extends Controller
     {
         // Here i will retrive all of the info about the current plan which is selected by user
         $planData = PlanController::getPlanData($request->plan_id);
-        $price = $planData['plan_price'];
+        $price = $planData->plan_price;
 
         // Fethc the count if count == 0 then it will break other wise continue
         $isValidCoupen = DB::table('offers')->where('offer_code', '=', $request->coupnCode)->where('count', '!=', '0')->count();
@@ -68,19 +68,18 @@ class DiscountController extends Controller
             //get updated price (discounted price).
             $updatePrice = self::getNewPrice($request->coupnCode, $price);
 
-            // store the discounted price inside the $planData which is fethc form PlanController.
-            $planData['discounted_price'] = $updatePrice;
+            // store the discounted price inside the $planData which is fetch form PlanController.
+            $planData->discounted_price = $updatePrice;
 
 
             //store discounted_rate inside of the $planData 
             foreach ($couponCodeDetails as $data) {
-                $planData['discounted_rate'] = $data->discount_percentage;
-                // $planData['applied_coupn'] = $request->coupnCode;
+                $planData->discounted_rate = $data->discount_percentage;
             }
 
-            // store the value for SubscriptionController's pay function (Payment gateway)
-            session()->put('plan_name',$planData['plan_name'] );
-            session()->put('plan_price',$planData['discounted_price'] );
+            // store the value for SubscriptionController's checkout function (Payment gateway)
+            session()->put('plan_name',$planData->plan_name );
+            session()->put('plan_price',$planData->discounted_price );
 
 
             //return the responce
@@ -94,7 +93,8 @@ class DiscountController extends Controller
             ];
         } else {
             return [
-                'message' => '0'
+                'message' => '0',
+                'data' => $planData,
             ];
         }
     }
@@ -109,6 +109,10 @@ class DiscountController extends Controller
         // Calculate the discounted price
         $discountedPrice = $currentPrice - ($currentPrice * $discountPercentage / 100);
 
+        // store the value for SubscriptionController's checkout function (Payment gateway)
+        session()->put('offer_id',$offer->id );
+
+        // return rounded price
         return ceil($discountedPrice);
     }
 }

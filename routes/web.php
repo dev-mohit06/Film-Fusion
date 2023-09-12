@@ -77,17 +77,16 @@ Route::middleware('UserAuth')->group(function () {
     });
 
 
+    
     //Without login routes
     Route::get('/home', function () {
         return view('index');
     })->name('home');
     Route::redirect('/', '/home');
 
-    Route::get('/pricing', function () {
-        return view('pricing');
-    })->name('pricing');
+    Route::get('/pricing', [PlanController::class,'getPricingCardView'])->name('pricing');
 
-    Route::get('/discount/{planId}',[PlanController::class,'getPlan'])->name('discount');
+    Route::get('/discount/{planId}',[PlanController::class,'returnDiscountView'])->name('discount');
 
     Route::get('/login', function () {
         return view('login');
@@ -100,10 +99,13 @@ Route::middleware('UserAuth')->group(function () {
     Route::post('/login', [AccountContorller::class, 'login'])->name('postLogin');
     Route::get('/logout',[AccountContorller::class,'logout'])->name('logout');
 
-    // Routes for account activation deactivation
+    // Routes for account activation
     Route::get('/activate/{token}', [AccountContorller::class, 'accountActivator'])->name('activate');
 
     // Route for apply discout
     Route::get('/applyCoupn',[DiscountController::class,'applyOffer'])->name('applyCoupn');
-    Route::get('/pay',[SubscriptionController::class,'pay'])->name('pay');
+
+    // Routes for payment gateway.
+    Route::get('/checkout',[SubscriptionController::class,'checkout'])->name('checkout');
+    Route::get('/afterCheckout',[SubscriptionController::class,'afterCheckout'])->name('afterCheckout');
 });

@@ -21,7 +21,7 @@ class AccountContorller extends Controller
     public static function sendEmail(string $email)
     {
         $mailData = [];
-        $user = DB::table('users')->select('username', 'email', 'verification_token')->get();
+        $user = DB::table('users')->select('username', 'email', 'verification_token')->where('email', '=', $email)->get();
         foreach ($user as $user) {
             $mailData = [
                 "username" => $user->username,
@@ -53,17 +53,19 @@ class AccountContorller extends Controller
         }
     }
 
-    // Authorization Process
-    /**
-     * 1 = Login Successfull (admin).
-     * 2 = Login Successfull (user subscribed).
-     * 3 = Login Successfull (user not subscribe).
-     * 4 = Login Successfull but account is not activated.
-     * 0 = Invalid Password.
-     * -1 = User doesn't exsist.
-     */
     public function login(Request $request)
     {
+
+        // Authorization Process
+        /**
+         * 1 = Login Successfull (admin).
+         * 2 = Login Successfull (user subscribed).
+         * 3 = Login Successfull but (user is not subscribe).
+         * 4 = Login Successfull but (account is not activated).
+         * 0 = Invalid Password.
+         * -1 = User doesn't exsist.
+         */
+
         $username = $request->lg_username;
         $password = $request->lg_password;
 
@@ -80,22 +82,22 @@ class AccountContorller extends Controller
                     session()->put('id', $user->id);
                     session()->put('username', $username);
                     session()->put('email', $email);
-                    session()->put('dp',$user->profile_picture);
+                    session()->put('dp', $user->profile_picture);
                     session()->put('subscription_status', $user->subscription_status);
-                    session()->put('role',$user->role);
+                    session()->put('role', $user->role);
                     //Admin
-                    if($user->role == 1){
+                    if ($user->role == 1) {
                         return 1;
                     }
                     //Subscriber
-                    else if($user->subscription_status == 1){
+                    else if ($user->subscription_status == 1) {
                         return 2;
                     }
                     //New User
-                    else{
+                    else {
                         return 3;
                     }
-                } 
+                }
                 // New User but account is not activated.
                 else if (Hash::check($password, $encryptedPassword) && $accountStatus == 0) {
                     self::sendEmail($email);
@@ -111,7 +113,8 @@ class AccountContorller extends Controller
         }
     }
 
-    public function logout(){
+    public function logout()
+    {
         session()->remove('login');
         session()->remove('id');
         session()->remove('username');
