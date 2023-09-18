@@ -84,9 +84,12 @@ class UserAuthMiddleware
                 return redirect()->back();
             }
         } else {
+
+            if($request->is('admin/*') || $request->is('user/*')){
+                return redirect()->route('login');
+            }
+
             $restrictedPaths = [
-                'admin/*',
-                'user/*',
                 'pricing',
                 'discount',
                 'logout',
