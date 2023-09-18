@@ -92,7 +92,7 @@
                         <span class="material-symbols-rounded">loyalty</span>
                         <h3>Refrel Histroy</h3>
                     </a>
-                    <a href="#">
+                    <a href="{{ route('logout') }}">
                         <span class="material-symbols-rounded">logout</span>
                         <h3>Logout</h3>
                     </a>
