@@ -11,6 +11,8 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <!-- Loader Css FIle -->
     <link rel="stylesheet" href="{{ asset('css/reusable/loader.css') }}">
+    {{-- Toast Notificaations CSS --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     @stack('styles')
 </head>
 
@@ -135,6 +137,11 @@
             });
         });
     </script>
+    <!--=============== Jquery ===============-->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+    {{-- Toast Notificaations JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     @stack('scripts')
 </body>
 

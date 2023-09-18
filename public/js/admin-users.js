@@ -47,29 +47,7 @@ backdropd.addEventListener("click", () => {
 });
 
 
-/* TODO: insert form validation */
-//FIXME: In this fileds json object the name key is your id for you input.
-const insertForm_fields = [{
-    name: 'user-name',
-    regex: /^[a-zA-Z\_]+$/,
-    error: 'Only characters A-Z, a-z and \'_\' are  acceptable.'
-},
-{
-    name: 'email',
-    regex: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-    error: 'Please enter a valid email address.'
-},
-{
-    name: 'password',
-    regex: /^.{8,}$/,
-    error: 'Password must be greater than or equals to 8 characters.'
-},
-{
-    name: 'age',
-    regex: /^\d+$/,
-    error: 'Only digits are allowed.'
-},
-];
+
 
 const insertForm = document.getElementById("insert-user-form");
 const updateForm = document.getElementById("updaet-user-form");

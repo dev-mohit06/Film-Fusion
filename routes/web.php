@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountContorller;
+use App\Http\Controllers\AdminControllers\DashboardController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\SubscriptionController;
@@ -46,14 +47,19 @@ Route::middleware('UserAuth')->group(function () {
 
     //Admin routes
     Route::prefix('/admin')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('admin.dashboard');
-        Route::redirect('/', '/dashboard');
+        Route::get('/dashboard', [DashboardController::class,'index'])->name('admin.dashboard');
 
+
+        //user page
         Route::get('/users', function () {
             return view('admin.users');
         })->name('admin.users');
+
+        //loadUsers (js ajax call route)
+        Route::get('/getAllUsers',[UserController::class,'getUsersTable'])->name('admin.users.getAll');
+        Route::get('/getUserInsertForm',[UserController::class,'getInsertForm'])->name('admin.users.getInsertForm');
+        Route::post('/insertWithSubscription',[UserController::class,'insertWithSubscription'])->name('admin.users.insertWithSubscription');
+        
 
         Route::get('/movies', function () {
             return view('admin.movies');

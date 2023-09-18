@@ -75,7 +75,7 @@ class UserAuthMiddleware
                 ];
                 foreach ($redirectPaths as $pattern) {
                     if ($request->is($pattern)) {
-                        return redirect()->back();
+                        return redirect()->route('pricing');
                     }
                 }
             }

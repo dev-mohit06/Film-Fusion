@@ -18,7 +18,7 @@
             <div class="middle">
                 <div class="left">
                     <h3>Total Users</h3>
-                    <h1>12,324</h1>
+                    <h1>{{ $counts['userCount'] }}</h1>
                 </div>
             </div>
         </div>
@@ -28,10 +28,9 @@
             <div class="middle">
                 <div class="left">
                     <h3>Total Movies</h3>
-                    <h1>5,024</h1>
+                    <h1>{{ $counts['movieCount'] }}</h1>
                 </div>
             </div>
-
         </div>
         <!-- End Of Movies -->
         <div class="admins">
@@ -39,7 +38,7 @@
             <div class="middle">
                 <div class="left">
                     <h3>Total Admins</h3>
-                    <h1>23</h1>
+                    <h1>{{ $counts['adminCount'] }}</h1>
                 </div>
             </div>
 
@@ -54,55 +53,23 @@
         <table>
             <thead>
                 <tr>
-                    <th>Full Name</th>
-                    <th>User Name</th>
-                    <th>Status</th>
+                    <th>Id</th>
+                    <th>Username</th>
+                    <th>Email</th>
                     <th>Create at</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Mohit Paddhariya</td>
-                    <td>___mohit06</td>
-                    <td class="success-dark">Active</td>
-                    <td>2023-06-30</td>
-                </tr>
-                <tr>
-                    <td>Mohit Paddhariya</td>
-                    <td>___mohit06</td>
-                    <td class="success-dark">Active</td>
-                    <td>2023-06-30</td>
-                </tr>
-                <tr>
-                    <td>Mohit Paddhariya</td>
-                    <td>___mohit06</td>
-                    <td class="success-dark">Active</td>
-                    <td>2023-06-30</td>
-                </tr>
-                <tr>
-                    <td>Mohit Paddhariya</td>
-                    <td>___mohit06</td>
-                    <td class="success-dark">Active</td>
-                    <td>2023-06-30</td>
-                </tr>
-                <tr>
-                    <td>Mohit Paddhariya</td>
-                    <td>___mohit06</td>
-                    <td class="success-dark">Active</td>
-                    <td>2023-06-30</td>
-                </tr>
-                <tr>
-                    <td>Mohit Paddhariya</td>
-                    <td>___mohit06</td>
-                    <td class="success-dark">Active</td>
-                    <td>2023-06-30</td>
-                </tr>
-                <tr>
-                    <td>Mohit Paddhariya</td>
-                    <td>___mohit06</td>
-                    <td class="success-dark">Active</td>
-                    <td>2023-06-30</td>
-                </tr>
+                {{-- {{ $admin->id }} --}}
+                @foreach ($admin as $row)
+                    <tr>
+                        <td>{{ $loop->index+1 }}</td>
+                        <td>{{ $row->username }}</td>
+                        <td>{{ $row->email }}</td>
+                        <td>{{ $row->created_at }}</td>
+                    </tr>
+                @endforeach
+
             </tbody>
         </table>
     </div>
