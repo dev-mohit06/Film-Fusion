@@ -58,7 +58,10 @@ Route::middleware('UserAuth')->group(function () {
         //loadUsers (js ajax call route)
         Route::get('/getAllUsers',[UserController::class,'getUsersTable'])->name('admin.users.getAll');
         Route::get('/getUserInsertForm',[UserController::class,'getInsertForm'])->name('admin.users.getInsertForm');
+        Route::get('/getUserUpdateForm',[UserController::class,'getUpdateForm'])->name('admin.users.getUpdateForm');
         Route::post('/insertWithSubscription',[UserController::class,'insertWithSubscription'])->name('admin.users.insertWithSubscription');
+        Route::post('/updateWithSubscription',[UserController::class,'updateWithSubscription'])->name('admin.users.updateWithSubscription');
+        Route::get('/deleteUser',[UserController::class,'deleteUser'])->name('admin.users.delete');
         
 
         Route::get('/movies', function () {
@@ -94,8 +97,12 @@ Route::middleware('UserAuth')->group(function () {
 
     Route::get('/discount/{planId}',[PlanController::class,'returnDiscountView'])->name('discount');
 
-    Route::get('/login', function () {
-        return view('login');
+    Route::get('/login/{refCode?}', function (string $refrelCode = null) {
+        if($refrelCode == null){
+            return view('login');
+        }else{
+            return view('login');
+        }
     })->name('login');
 
 

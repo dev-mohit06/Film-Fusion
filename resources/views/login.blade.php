@@ -107,9 +107,9 @@
 
                 <div class="carousel">
                     <div class="images-wrapper">
-                        <img src="./img/Film rolls-pana.svg" class="image img-1 show" alt="" />
-                        <img src="./img/Safe-bro.svg" class="image img-2" alt="" />
-                        <img src="./img/Discount-pana.svg" class="image img-3" alt="" />
+                        <img src="{{ asset('img/Film rolls-pana.svg') }}" class="image img-1 show" alt="" />
+                        <img src="{{ asset('img/Safe-bro.svg') }}" class="image img-2" alt="" />
+                        <img src="{{ asset('img/Discount-pana.svg') }}" class="image img-3" alt="" />
                     </div>
 
                     <div class="text-slider">

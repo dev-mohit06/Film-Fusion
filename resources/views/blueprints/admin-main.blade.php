@@ -142,6 +142,9 @@
         crossorigin="anonymous"></script>
     {{-- Toast Notificaations JS --}}
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+    {{-- Needed scripts --}}
+    <script src="{{ asset('ajax/url.js') }}"></script>
     @stack('scripts')
 </body>
 

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use League\CommonMark\Extension\Table\Table;
 
 class UserController extends Controller
 {
@@ -67,11 +66,11 @@ class UserController extends Controller
             </td>
             ' . $subscription_status . '
             <td>
-                <p class="status delivered update-form pointer updateuser_popup" data-update_id="' . $user->id . '">
+                <p class="status delivered update-form pointer updateuser_popup" id="updateuserBtn" data-update_id="' . $user->id . '">
                     Update
                 </p>
                 <br>
-                <p class="status cancelled delete-btn pointer" data-delete_id="' . $user->id . '">
+                <p class="status cancelled delete-btn pointer" id="deleteuserBtn" data-delete_id="' . $user->id . '">
                     Delete
                 </p>
             </td>
@@ -102,17 +101,6 @@ class UserController extends Controller
             <input type="password" placeholder="Enter the password" name="password" id="password" autocomplete="new-password" required />
             <span class="err" id="err-password"></span>
         </div>
-        <div class="gender-box">
-            <h3>Gender</h3>
-            <div class="select-box">
-                <select name="gender" required>
-                    <option>Gender</option>
-                    <option value="Male" selected>Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Prefer not to say">Prefer not to say</option>
-                </select>
-            </div>
-        </div>
         <div class="input-box address">
             <label>Config of user</label>
             <div class="column">
@@ -125,7 +113,7 @@ class UserController extends Controller
                 </div>
                 <div class="select-box">
                     <select name="plan" required>
-                        <option value="0" selected>no subscription</option>';
+                        <option value="0" selected>No Subscription</option>';
 
 
         foreach ($plans as $plan) {
@@ -159,12 +147,11 @@ class UserController extends Controller
                 'updated_at' => now(),
             ]);
 
-            if($check){
+            if ($check) {
                 return "1";
-            }else{
+            } else {
                 return "0";
             }
-
         } else if ($request->plan > 0) {
             $check = DB::table('users')->insertOrIgnore([
                 'username' => $request->username,
@@ -180,7 +167,7 @@ class UserController extends Controller
 
             if ($check) {
                 $planDetails = PlanController::getPlanData($request->plan);
-                $userDetails = DB::table('users')->first();
+                $userDetails = DB::table('users')->where('email', '=', $request->email)->first();
                 $purchaseDate = Carbon::parse(now());
                 $expiredDate = $purchaseDate->addDay($planDetails->plan_duration * 30);
 
@@ -191,16 +178,250 @@ class UserController extends Controller
                     'plan_id' => $request->plan,
                     'purchase_date' => $purchaseDate,
                     'expire_date' => $expiredDate,
-                    'plan_duration' => $planDetails->plan_duration,
+                    'plan_duration' => ($planDetails->plan_duration * 30),
                     'is_active' => 1,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
 
                 return "1";
-            }else{
+            } else {
                 return "0";
             }
         }
+    }
+
+    public function getUpdateForm(Request $request)
+    {
+        $user = DB::table('users')->where('id', '=', $request->userId)->first();
+        $plans = DB::table('plans')->get();
+        $status = '';
+        $role = '';
+        $subscription = '';
+
+        foreach ($plans as $plan) {
+            $subscription .= '<option value="' . $plan->plan_id . '">extend ' . $plan->plan_duration . ' month</option>';
+        }
+        if ($user->role == 0) {
+            $role = '<select name="role" required>
+            <option disabled>Role</option>
+            <option selected value="0">User</option>
+            <option value="1">Admin</option>
+        </select>';
+        } else {
+            $role = '<select name="role" required>
+            <option disabled>Role</option>
+            <option value="0">User</option>
+            <option selected value="1">Admin</option>
+        </select>';
+        }
+
+        if ($user->account_status == -1) {
+            $status .= '<option value="1">Activated</option>';
+            $status .= '<option value="0">Deactivated</option>';
+            $status .= '<option value="-1" selected>Deleted</option>';
+        } else if ($user->account_status == 1) {
+            $status .= '<option value="1" selected>Activated</option>';
+            $status .= '<option value="0">Deactivated</option>';
+            $status .= '<option value="-1">Deleted</option>';
+        } else {
+            $status .= '<option value="1">Activated</option>';
+            $status .= '<option value="0" selected>Deactivated</option>';
+            $status .= '<option value="-1">Deleted</option>';
+        }
+        $output = '<form class="form" id="update-user-form">
+        ' . csrf_field() . '
+        <div class="input-box">
+            <label>Username</label>
+            <input type="text" placeholder="Enter the username" id="update_username" name="username" required value="' . $user->username . '"/>
+            <span class="err" id="err-update_username"></span>
+        </div>
+        <div class="input-box">
+            <label>Email Address</label>
+            <input type="email" placeholder="Enter email address" id="update_email" name="email" value="' . $user->email . '" required />
+            <span class="err" id="err-update_email"></span>
+        </div>
+        <div class="column">
+            <div class="input-box">
+                <label>Password</label>
+                <input type="password" placeholder="Enter the password" name="password" id="update_password" />
+                <span class="err" id="err-update_password"></span>
+            </div>
+            <div class="input-box">
+                <label>Profile Picture</label>
+                <input type="file" id="update-profile_picture" name="profile_picture" />
+                <span class="err" id="err-update-profile_picture"></span>
+            </div>
+        </div>
+            <div class="input-box address">
+                <label>Config of user</label>
+                <div class="select-box">
+                <select name="status">
+                    ' . $status . '                        
+                </select>
+            </div>
+
+            <div class="column">
+                <div class="select-box">
+                    ' . $role . '
+                </div>
+                <div class="select-box">
+                    <select name="subscription">
+                        <option selected value="" disable>Noting Change</option>
+                        ' . $subscription . '                        
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button>Submit</button>
+        </form>';
+
+        return $output;
+    }
+
+    public function updateWithSubscription(Request $request)
+    {
+
+        /**
+         * -1 : user already exsist
+         * 1 : user's updated successfully
+         */
+
+        //fetching the current details of the user.
+        $user = DB::table('users')->where('id', '=', $request->userId)->first();
+
+        //fetching the profile picture if any upload
+        $fileName = $user->profile_picture;
+        if ($request->hasFile('profile_picture')) {
+
+            $file = $request->file('profile_picture');
+            $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('/users/profile_pictures/'), $fileName);
+
+            if ($user->profile_picture != "deafult.jpg") {
+                unlink(public_path('/users/profile_pictures/' . $user->profile_picture . ''));
+            }
+        }
+
+
+        $is_userExist = DB::table('users')
+            ->where(function ($query) use ($request) {
+                $query->where('username', '=', $request->username)
+                    ->orWhere('email', '=', $request->email);
+            })
+            ->where('email', '!=', $user->email)
+            ->where('username', '!=', $user->username)
+            ->count();
+
+        $newPassword = "";
+        if ($request->password != "") {
+            $newPassword = bcrypt($request->password);
+        } else {
+            $newPassword = $user->password;
+        }
+
+        $subscription = '';
+        if ($request->subscription != null) {
+            $subscription = 1; 
+        } else {
+            $subscription = $user->subscription_status;
+        }
+
+        if ($is_userExist) {
+            return "-1";
+        } else {
+
+            // update the user data
+            DB::table('users')->where('id', '=', $request->userId)->update([
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => $newPassword,
+                'profile_picture' => $fileName,
+                'account_status' => $request->status,
+                'role' => $request->role,
+                'subscription_status' => $subscription,
+                'updated_at' => now(),
+            ]);
+
+            if ($request->subscription != null) {
+
+                //fetch the current user which we are update previous.
+                $recentUser = DB::table('users')->where('email', '=', $request->email)->first();
+
+                // fetch the old subscription data if user have.
+                $oldSubscription = DB::table('subscriptions')->where('user_id', '=', $recentUser->id)->where('is_active', '=', 1)->first();
+
+                // fetch the plan details
+                $planDetails = DB::table('plans')->where('plan_id', '=', $request->subscription)->first();
+
+                //helper variable to insert subscription data.
+                $purchaseDate = "";
+                $expireDate = "";
+                $user_id = $recentUser->id;
+                $plan_id = $request->subscription;
+                $plan_duration = ($planDetails->plan_duration * 30);
+
+                if ($oldSubscription) {
+                    // get the purchase date
+                    $purchaseDate = $oldSubscription->purchase_date;
+
+                    // get old expire date
+                    $oldExpireDate = Carbon::parse($oldSubscription->expire_date);
+
+                    // extend the expire date
+                    $expireDate = $oldExpireDate->addDay($planDetails->plan_duration * 30);
+
+                    // update the data
+                    DB::table('subscriptions')->where('user_id', '=', $recentUser->id)->where('is_active','=','1')->update([
+                        'plan_id' => $plan_id,
+                        'purchase_date' => $purchaseDate,
+                        'expire_date' => $expireDate,
+                        'plan_duration' => $plan_duration + $oldSubscription->plan_duration,
+                        'updated_at' => now(),
+                    ]);
+
+                    return "1";
+                } else {
+                    // create the temperory purchase date
+                    $purchaseDate = Carbon::parse(now());
+
+                    // create the temperory purchase date
+                    $tempPurchaseDate = Carbon::parse(now());
+                    // create the expire date
+                    $expireDate = $tempPurchaseDate->addDays($planDetails->plan_duration * 30);
+
+                    // insert the subscription data.
+                    DB::table('subscriptions')->insert([
+                        'user_id' => $user_id,
+                        'offer_id' => null,
+                        'plan_id' => $plan_id,
+                        'purchase_date' => $purchaseDate,
+                        'expire_date' => $expireDate,
+                        'plan_duration' => $plan_duration,
+                        'is_active' => 1,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+
+                    // update the subscription status of the recent user.
+                    DB::table('users')->where('id', '=', $recentUser->id)->update([
+                        'subscription_status' => 1,
+                    ]);
+
+                    return $expireDate;
+                }
+            } else {
+                return "1";
+            }
+        }
+    }
+
+    public function deleteUser(Request $request){
+        $userId = $request->userId;
+
+        DB::table('users')->where('id','=',$userId)->delete();
+        DB::table('subscriptions')->where('user_id','=',$userId)->delete();
+
+        return "1";
     }
 }
