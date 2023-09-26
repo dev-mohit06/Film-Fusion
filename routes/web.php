@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountContorller;
 use App\Http\Controllers\AdminControllers\DashboardController;
+use App\Http\Controllers\AdminControllers\MoviesController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\SubscriptionController;
@@ -54,8 +55,6 @@ Route::middleware('UserAuth')->group(function () {
         Route::get('/users', function () {
             return view('admin.users');
         })->name('admin.users');
-
-        //loadUsers (js ajax call route)
         Route::get('/getAllUsers',[UserController::class,'getUsersTable'])->name('admin.users.getAll');
         Route::get('/getUserInsertForm',[UserController::class,'getInsertForm'])->name('admin.users.getInsertForm');
         Route::get('/getUserUpdateForm',[UserController::class,'getUpdateForm'])->name('admin.users.getUpdateForm');
@@ -67,6 +66,12 @@ Route::middleware('UserAuth')->group(function () {
         Route::get('/movies', function () {
             return view('admin.movies');
         })->name('admin.movies');
+        Route::get('/getAllMovies',[MoviesController::class,'getMoviesTable'])->name('admin.movies.getAll');
+        Route::post('/insertMovie',[MoviesController::class,'insert'])->name('admin.movies.insertMovie');
+        Route::get('/getMovieUpdateForm',[MoviesController::class,'getUpdateForm'])->name('admin.movies.getUpdateForm');
+        Route::post('/updateMovie',[MoviesController::class,'update'])->name('admin.movies.updateMovie');
+        Route::get('/deleteMovie',[MoviesController::class,'delete'])->name('admin.movies.deleteMovie');
+
 
         Route::get('/offers', function () {
             return view('admin.offers');

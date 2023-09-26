@@ -1,7 +1,7 @@
 @extends('blueprints.admin-main')
 
 @section('title')
-    Dashboard
+    Manage Users
 @endsection
 
 @push('styles')

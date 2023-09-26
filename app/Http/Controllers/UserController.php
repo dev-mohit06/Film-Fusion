@@ -28,6 +28,7 @@ class UserController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
         if ($check) {
             if ($request->hasFile('profile_picture')) {
                 $request->file('profile_picture')->move(public_path('/users/profile_pictures/'), $fileName);
@@ -322,7 +323,7 @@ class UserController extends Controller
 
         $subscription = '';
         if ($request->subscription != null) {
-            $subscription = 1; 
+            $subscription = 1;
         } else {
             $subscription = $user->subscription_status;
         }
@@ -369,7 +370,7 @@ class UserController extends Controller
                     $oldExpireDate = Carbon::parse($oldSubscription->expire_date);
 
                     // extend the expire date
-                    $expireDate = $oldExpireDate->addDay($planDetails->plan_duration * 30);
+                    $expireDate = $oldExpireDate->addDays($planDetails->plan_duration * 30);
 
                     // update the data
                     DB::table('subscriptions')->where('user_id', '=', $recentUser->id)->where('is_active','=','1')->update([
@@ -382,7 +383,7 @@ class UserController extends Controller
 
                     return "1";
                 } else {
-                    // create the temperory purchase date
+                    // create the purchase date
                     $purchaseDate = Carbon::parse(now());
 
                     // create the temperory purchase date
@@ -408,7 +409,7 @@ class UserController extends Controller
                         'subscription_status' => 1,
                     ]);
 
-                    return $expireDate;
+                    return "1";
                 }
             } else {
                 return "1";
