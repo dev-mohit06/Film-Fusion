@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/users.css') }}">
     <link rel="stylesheet" href="{{ asset('css/reusable/loader.css') }}">
     <link rel="stylesheet" href="{{ asset('css/reusable/btnfancy.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/resuable/data-loader.css') }}">
 @endpush
 
 
@@ -42,10 +43,6 @@
     <div class="table-parent">
         <section class="table__header">
             <h1>Offers</h1>
-            <div class="input-group">
-                <input type="search" placeholder="Search Data...">
-                <span class="material-symbols-rounded">search</span>
-            </div>
         </section>
         <section class="table__body">
             <table>
@@ -60,46 +57,7 @@
                         <th> Operations </th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            Moonsoon Special
-                        </td>
-                        <td>20%</td>
-                        <td>MON20</td>
-                        <td class="deactive">Deactive</td>
-                        <td>1-6-2023</td>
-                        <td>
-                            <p class="status delivered update-form pointer updateuser_popup">
-                                Update
-                            </p>
-                            <br>
-                            <p class="status cancelled delete-btn pointer">
-                                Delete
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>
-                            Rakshabandhan Dhamak
-                        </td>
-                        <td>70%</td>
-                        <td>BHAIBHEN70</td>
-                        <td class="active">Active</td>
-                        <td>5-8-2023</td>
-                        <td>
-                            <p class="status delivered update-form pointer updateuser_popup">
-                                Update
-                            </p>
-                            <br>
-                            <p class="status cancelled delete-btn pointer">
-                                Delete
-                            </p>
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody class="table-data"></tbody>
             </table>
         </section>
     </div>
@@ -112,24 +70,37 @@
             <div class="close-popup" id="adduser_popup_close">
                 <span class="material-symbols-rounded">close</span>
             </div>
-            <form action="#" class="form" id="insert-user-form">
+            <form class="form" id="insert-user-form">
+                @csrf
                 <div class="input-box">
-                    <label>Offername</label>
-                    <input type="text" placeholder="Enter the offer name" id="offer-name" required />
-                    <span class="err" id="err-offer-name"></span>
+                    <label>Offer Name</label>
+                    <input type="text" placeholder="Enter the offer name" id="offer-name" name="offer_name" required />
+                    {{-- <span class="err" id="err-offer-name"></span> --}}
                 </div>
-                <div class="gender-box">
-                    <h3>Discount persentage</h3>
+                <div class="input-box">
+                    <label>Offer Code</label>
+                    <input type="text" placeholder="Enter the offer code" name="offer_code" id="offer-code" />
+                    {{-- <span class="err" id="err-offer-name"></span> --}}
+                </div>
+                <div class="input-box">
+                    <label>Discount Percentage</label>
+                    <input type="number" placeholder="Enter the discount percentage" name="discount_percentage"
+                        id="offer-price" />
+                    {{-- <span class="err" id="err-offer-name"></span> --}}
+                </div>
+                <div class="input-box">
+                    <label>Add number of usage</label>
+                    <input type="number" placeholder="Enter the number of usage" name="count" id="offer-number" />
+                    {{-- <span class="err" id="err-offer-name"></span> --}}
+                </div>
+                <div class="input-box">
+                    <label>Status</label>
                     <div class="select-box">
-                        <select required>
-                            <option disabled>Discount persentage</option>
-                            <option value="10" selected>10%</option>
-                            <option value="20">20%</option>
-                            <option value="30">30%</option>
-                            <option value="40">40%</option>
-                            <option value="50">50%</option>
-                            <option value="60">60%</option>
-                            <option value="70">70%</option>
+                        <select required="" name="offer_status">
+                            <option disabled>Status</option>
+                            <option value="1" selected="">Active</option>
+                            <option value="0">Deactive</option>
+                            <option value="-1">Delete</option>
                         </select>
                     </div>
                 </div>
@@ -146,29 +117,19 @@
             <div class="close-popup" id="updateuser_popup_close">
                 <span class="material-symbols-rounded">close</span>
             </div>
-            <form action="#" class="form" id="insert-user-form">
-                <div class="input-box">
-                    <label>Offername</label>
-                    <input type="text" placeholder="Enter the offer name" id="update-offer-name" required />
-                    <span class="err" id="err-update-offer-name"></span>
+            <div class="duf"></div>
+            <div class="data-loader">
+                <div class="lds-roller">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
                 </div>
-                <div class="gender-box">
-                    <h3>Discount persentage</h3>
-                    <div class="select-box">
-                        <select required>
-                            <option disabled>Discount persentage</option>
-                            <option value="10" selected>10%</option>
-                            <option value="20">20%</option>
-                            <option value="30">30%</option>
-                            <option value="40">40%</option>
-                            <option value="50">50%</option>
-                            <option value="60">60%</option>
-                            <option value="70">70%</option>
-                        </select>
-                    </div>
-                </div>
-                <button>Submit</button>
-            </form>
+            </div>
         </section>
     </div>
     <!-- ========== End of Update user form ========== -->
@@ -176,6 +137,7 @@
 
 @push('scripts')
     <script src="{{ asset('js/resulable/sidebar.js') }}"></script>
-    <script src="{{ asset('js/resulable/search.js') }}"></script>
-    <script src="{{ asset('js/admin-users.js') }}"></script>
+    {{-- <script src="{{ asset('js/admin-users.js') }}"></script> --}}
+
+    <script src="{{ asset('ajax/Offers/offers.js') }}"></script>
 @endpush

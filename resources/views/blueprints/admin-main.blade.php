@@ -80,13 +80,13 @@
                         <span class="material-symbols-rounded">universal_currency_alt</span>
                         <h3>Manage offers</h3>
                     </a>
-                    <a href="{{ route('admin.analytics') }}">
-                        <span class="material-symbols-rounded">insights</span>
-                        <h3>Analytics</h3>
-                    </a>
                     <a href="{{ route('admin.subscription-histroy') }}">
                         <span class="material-symbols-rounded">request_quote</span>
                         <h3>Subscription</h3>
+                    </a>
+                    <a href="{{ route('admin.analytics') }}">
+                        <span class="material-symbols-rounded">insights</span>
+                        <h3>Analytics</h3>
                     </a>
                     <a href="{{ route('admin.refrel-histroy') }}">
                         <span class="material-symbols-rounded">loyalty</span>

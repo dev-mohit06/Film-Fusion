@@ -76,6 +76,11 @@ Route::middleware('UserAuth')->group(function () {
         Route::get('/offers', function () {
             return view('admin.offers');
         })->name('admin.offers');
+        Route::get('/getAllOffers',[DiscountController::class,'getOffersTable'])->name('admin.offers.getAll');
+        Route::post('/insertOffer',[DiscountController::class,'createNewOffer'])->name('admin.offers.insert');
+        Route::get('/getOfferUpdateForm',[DiscountController::class,'getUpdateForm'])->name('admin.offers.getUpdateForm');
+        Route::post('/updateOffers',[DiscountController::class,'update'])->name('admin.offers.update');
+        Route::get('/deleteOffers',[DiscountController::class,'delete'])->name('admin.offers.delete');
 
         Route::get('/analytics', function () {
             return view('admin.analytics');
@@ -84,6 +89,7 @@ Route::middleware('UserAuth')->group(function () {
         Route::get('/subscription-histroy', function () {
             return view('admin.subscription-histroy');
         })->name('admin.subscription-histroy');
+        Route::get('/getAllSubscription',[SubscriptionController::class,'getSubscriptionTable'])->name('admin.subscription-histroy.getAll');
 
         Route::get('/refrel-histroy', function () {
             return view('admin.refrel-histroy');

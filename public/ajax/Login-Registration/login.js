@@ -118,6 +118,15 @@ $(document).ready(function () {
                         Toast.dismiss(loginMessage);
                     }
 
+                    // ACCOUNT DELETED
+                    else if (response == -2) {
+                        errorMessage = Toast.error({
+                            message: 'Account Deleted!!',
+                            dismissible: true,
+                        });
+                        Toast.dismiss(loginMessage);
+                    }
+
                     // USER DOESN'T EXSIST.
                     else {
                         errorMessage = Toast.open({

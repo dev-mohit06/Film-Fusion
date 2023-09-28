@@ -359,7 +359,6 @@ class UserController extends Controller
                 $purchaseDate = "";
                 $expireDate = "";
                 $user_id = $recentUser->id;
-                $plan_id = $request->subscription;
                 $plan_duration = ($planDetails->plan_duration * 30);
 
                 if ($oldSubscription) {
@@ -374,7 +373,7 @@ class UserController extends Controller
 
                     // update the data
                     DB::table('subscriptions')->where('user_id', '=', $recentUser->id)->where('is_active','=','1')->update([
-                        'plan_id' => $plan_id,
+                        'plan_id' => $oldSubscription->plan_id,
                         'purchase_date' => $purchaseDate,
                         'expire_date' => $expireDate,
                         'plan_duration' => $plan_duration + $oldSubscription->plan_duration,
@@ -390,6 +389,9 @@ class UserController extends Controller
                     $tempPurchaseDate = Carbon::parse(now());
                     // create the expire date
                     $expireDate = $tempPurchaseDate->addDays($planDetails->plan_duration * 30);
+
+                    // get a new plan id
+                    $plan_id = $request->subscription;
 
                     // insert the subscription data.
                     DB::table('subscriptions')->insert([
@@ -420,8 +422,9 @@ class UserController extends Controller
     public function deleteUser(Request $request){
         $userId = $request->userId;
 
-        DB::table('users')->where('id','=',$userId)->delete();
-        DB::table('subscriptions')->where('user_id','=',$userId)->delete();
+        DB::table('users')->where('id','=',$userId)->update([
+            'account_status'=>'-1',
+        ]);
 
         return "1";
     }

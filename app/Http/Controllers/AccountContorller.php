@@ -64,6 +64,7 @@ class AccountContorller extends Controller
          * 4 = Login Successfull but (account is not activated).
          * 0 = Invalid Password.
          * -1 = User doesn't exsist.
+         * -2 = User deleted.
          */
 
         $username = $request->lg_username;
@@ -97,6 +98,10 @@ class AccountContorller extends Controller
                     else {
                         return 3;
                     }
+                }
+                // account is deleted.
+                else if (Hash::check($password, $encryptedPassword) && $accountStatus == -1) {
+                    return -2;
                 }
                 // New User but account is not activated.
                 else if (Hash::check($password, $encryptedPassword) && $accountStatus == 0) {

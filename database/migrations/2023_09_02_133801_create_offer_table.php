@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string("offer_name");
             $table->string("discount_percentage");
             $table->string("offer_code");
+            $table->integer("offer_status")->default(1);
             $table->string("count");
             $table->timestamps();
         });
