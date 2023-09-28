@@ -403,7 +403,7 @@ $(document).ready(function() {
         let WaitingMessage;
         $.ajax({
             method: "GET",
-            url: "{{ route('admin.movies.deleteMovie') }}",
+            url: url + "admin/deleteMovie",
             data: {
                 delete_id: delete_id,
             },
