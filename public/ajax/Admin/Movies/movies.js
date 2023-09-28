@@ -418,7 +418,7 @@ $(document).ready(function() {
             success: function(responce) {
                 Toast.dismiss(WaitingMessage);
                 Toast.success("The movie has been successfully deleted.");
-                console.log(responce);
+                loadMovies();
             },
             error: function(error) {
                 console.log(error);
