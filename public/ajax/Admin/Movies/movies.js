@@ -307,7 +307,7 @@ $(document).ready(function() {
                         } else {
                             $.ajax({
                                 method: "POST",
-                                url: url + "admin/deleteMovie",
+                                url: url + "admin/updateMovie",
                                 data: formData,
                                 xhr: function() {
                                     // Create an XMLHttpRequest object with progress tracking
