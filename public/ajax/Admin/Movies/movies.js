@@ -42,9 +42,9 @@ $(document).ready(function() {
     // insert
     $("#addmovie_popup").on("click", function() {
         showPopup("#backdrop", "#add-form", "backdrop-show", "form-show");
-        let count = 0;
-
+        
         $("#insert-movie-form").on("submit", function(e) {
+            let count = 0;
             e.preventDefault();
 
             //picture validations
@@ -109,6 +109,8 @@ $(document).ready(function() {
                     pictureErrorElement3.html("");
                 }
             }
+
+            console.log(count);
 
             if (count == 0) {
 
