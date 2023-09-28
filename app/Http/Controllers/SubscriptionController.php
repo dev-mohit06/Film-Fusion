@@ -95,7 +95,7 @@ class SubscriptionController extends Controller
 
     public function getSubscriptionTable()
     {
-        $records = DB::table('subscriptions')->where('is_active', '=', '1')->get();
+        $records = DB::table('subscriptions')->get();
 
         $output = '';
         $count = 1;
@@ -105,12 +105,19 @@ class SubscriptionController extends Controller
             $userData = DB::table('users')->select('username')->where('id', '=', $record->user_id)->first();
             $planData = DB::table('plans')->select('plan_name')->where('plan_id', '=', $record->plan_id)->first();
 
+            if($record->is_active){
+                $status = "<td class='active'>Active</td>";
+            }else{
+                $status = "<td class='deactive'>Deactive</td>";
+            }
+
             $output .= '<tr>
             <td>' . $count . '</td>
             <td>' . $userData->username . '</td>
             <td>' . $planData->plan_name . '</td>
             <td>' . $record->purchase_date . '</td>
             <td>' . $record->expire_date . '</td>
+            '.$status.'
             </tr>';
             $count++;
         }

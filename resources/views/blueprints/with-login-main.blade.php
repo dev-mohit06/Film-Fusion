@@ -14,6 +14,9 @@
     <link rel="shortcut icon" href="{{ asset('img/Logo.svg') }}" type="image/x-icon">
     <!-- ========== Box Icons ========== -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    {{-- Toast Notificaations CSS --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+
 </head>
 
 <body>
@@ -55,7 +58,7 @@
             </div> -->
             <!-- User -->
             <a href="#" class="user">
-                <img src="{{ asset('img/user.jpg') }}" alt="profile-picture">
+                <img src="{{ asset('users/profile_pictures/' . session()->get('dp') . '') }}" alt="profile-picture">
             </a>
 
             <!-- NavBar or Sidebar -->
@@ -80,6 +83,16 @@
                     <i class="bx bxs-cog"></i>
                     <span class="nav-link-title">Setting</span>
                 </a>
+                @if (session()->get('role') == 1)
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link">
+                        <i class="bx bxs-business"></i>
+                        <span class="nav-link-title">Admin Panel</span>
+                    </a>
+                @endif
+                <a href="{{ route('logout') }}" class="nav-link">
+                    <i class="bx bx-undo"></i>
+                    <span class="nav-link-title">Logout</span>
+                </a>
             </div>
         </div>
     </header>
@@ -94,6 +107,14 @@
         <br>
     </div>
     <script src="{{ asset('js/loader.js') }}"></script>
+    <!--=============== Jquery ===============-->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+
+    {{-- Toast Notificaations JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+
     <script>
         // Get the current URL path
         var currentPath = window.location.pathname;

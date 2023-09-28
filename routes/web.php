@@ -16,9 +16,7 @@ Route::middleware('UserAuth')->group(function () {
 
     //with login routes
     Route::prefix('/user')->group(function () {
-        Route::get('/home', function () {
-            return view('with-login.index');
-        })->name('user.home');
+        Route::get('/home',[MoviesController::class,'returnMoviesAccordingUi'])->name('user.home');
 
         Route::get('/watch-later', function () {
             return view('with-login.watch-later');
@@ -32,17 +30,13 @@ Route::middleware('UserAuth')->group(function () {
             return view('with-login.history');
         })->name('user.history');
 
-        Route::get('/settings', function () {
-            return view('with-login.settings');
-        })->name('user.settings');
+        Route::get('/settings', [UserController::class,'returnSettings'])->name('user.settings');
+        Route::get('/deleteUser', [UserController::class,'deleteCurrentUser'])->name('user.settings.delete');
 
-        Route::get('/play-page', function () {
-            return view('with-login.play-page');
-        })->name('user.play-page');
+        Route::get('/play-page/{movie_id?}',[MoviesController::class,'returnSpecificMovie'])->name('user.play-page');
 
-        Route::get('/edit-profile', function () {
-            return view('with-login.edit-profile');
-        })->name('user.edit-profile');
+        Route::get('/edit-profile', [UserController::class,'returnEditProfile'])->name('user.edit-profile');
+        Route::post('/updateUser', [UserController::class,'updateProfile'])->name('user.edit-profile.updateUser');
     });
 
 

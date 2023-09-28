@@ -14,41 +14,26 @@
     <!-- Swiper -->
     <div class="swiper home-content">
         <div class="swiper-wrapper">
-            <!-- First promition movie -->
-            <div class="swiper-slide">
-                <section class="home container" id="home">
-                    <!-- Home Image -->
-                    <img src="{{ asset('img/banner-1.jpg') }}" alt="" class="home-img">
-                    <!-- Home Text -->
-                    <div class="home-text">
-                        <h1 class="home-title">
-                            Ford vs Ferrari
-                        </h1>
-                        <a href="{{ route('user.play-page') }}" class="watch-btn">
-                            <i class="bx bx-right-arrow"></i>
-                            <span>Watch the movie</span>
-                        </a>
-                    </div>
-                </section>
-            </div>
-            <!-- Second promition movie -->
-            <div class="swiper-slide">
-                <section class="home container" id="home">
-                    <!-- Home Image -->
-                    <img src="{{ asset('img/banner-2.jpg') }}" alt="" class="home-img">
-                    <!-- Home Text -->
-                    <div class="home-text">
-                        <h1 class="home-title">
-                            Fast and Furious 8
-                        </h1>
-                        <span class="home-category">Action</span>
-                        <a href="{{ route('user.play-page') }}" class="watch-btn">
-                            <i class="bx bx-right-arrow"></i>
-                            <span>Watch the movie</span>
-                        </a>
-                    </div>
-                </section>
-            </div>
+
+            @foreach ($sliderMovies as $movie)
+                <div class="swiper-slide">
+                    <section class="home container" id="home">
+                        <!-- Home Image -->
+                        <img src="{{ asset('movies-imgs/banners/' . $movie->movie_banner . '') }}" alt=""
+                            class="home-img">
+                        <!-- Home Text -->
+                        <div class="home-text">
+                            <h1 class="home-title">
+                                {{ $movie->movie_name }}
+                            </h1>
+                            <a href="{{ route('user.play-page',['movie_id'=>$movie->id]) }}" class="watch-btn">
+                                <i class="bx bx-right-arrow"></i>
+                                <span>Watch the movie</span>
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            @endforeach
         </div>
         <div class="swiper-pagination home-swiper"></div>
     </div>
@@ -71,59 +56,26 @@
         <!-- Content -->
         <div class="popular-content swiper">
             <div class="swiper-wrapper">
-                <!-- Movie Box -->
-                <div class="swiper-slide">
-                    <div class="movie-box">
-                        <img src="{{ asset('img/popular-movie-1.jpg') }}" alt="" class="movie-box-img" loading="lazy">
-                        <div class="box-text">
-                            <h2 class="movie-title">
-                                No Way Home
-                            </h2>
-                            <span class="movie-type">
-                                Action
-                            </span>
-                            <a href="{{ route('user.play-page') }}" class="watch-btn play-btn">
-                                <i class="bx bx-right-arrow"></i>
-                            </a>
+                @foreach ($popularMovies as $movie)
+                    <div class="swiper-slide">
+                        <div class="movie-box">
+                            <img src="{{ asset('movies-imgs/posters/' . $movie->movie_poster . '') }}" alt=""
+                                class="movie-box-img" loading="lazy">
+                            <div class="box-text">
+                                <h2 class="movie-title">
+                                    {{ $movie->movie_name }}
+                                </h2>
+                                <span class="movie-type">
+                                    {{ $movie->category }}
+                                </span>
+                                <a href="{{ route('user.play-page',['movie_id'=>$movie->id]) }}" class="watch-btn play-btn">
+                                    <i class="bx bx-right-arrow"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-
+                @endforeach
                 <!-- Movie Box -->
-                <div class="swiper-slide">
-                    <div class="movie-box">
-                        <img src="{{ asset('img/popular-movie-2.jpg') }}" alt="" class="movie-box-img" loading="lazy">
-                        <div class="box-text">
-                            <h2 class="movie-title">
-                                Jungle Cruise
-                            </h2>
-                            <span class="movie-type">
-                                Adventure
-                            </span>
-                            <a href="{{ route('user.play-page') }}" class="watch-btn play-btn">
-                                <i class="bx bx-right-arrow"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Movie Box -->
-                <div class="swiper-slide">
-                    <div class="movie-box">
-                        <img src="{{ asset('img/popular-movie-3.jpg') }}" alt="" class="movie-box-img" loading="lazy">
-                        <div class="box-text">
-                            <h2 class="movie-title">
-                                Loki
-                            </h2>
-                            <span class="movie-type">
-                                Action
-                            </span>
-                            <a href="{{ route('user.play-page') }}" class="watch-btn play-btn">
-                                <i class="bx bx-right-arrow"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -134,55 +86,28 @@
         <!-- Heading -->
         <div class="heading">
             <h2 class="heading-title">
-                Movies
+                All Movies
             </h2>
         </div>
         <!-- Movie Content -->
         <div class="movies-content">
             <!-- Movie Box -->
-            <!-- Movie Box -->
-            <div class="movie-box">
-                <img src="{{ asset('img/movie-1.jpg') }}" alt="" class="movie-box-img" loading="lazy">
-                <div class="box-text">
-                    <h2 class="movie-title">
-                        Jumanji - welcome to the jungle
-                    </h2>
-                    <span class="movie-type">
-                        Adventure
-                    </span>
-                    <a href="{{ route('user.play-page') }}"class="watch-btn play-btn">
-                        <i class="bx bx-right-arrow"></i>
-                    </a>
+            @foreach ($allMovies as $movie)
+                <div class="movie-box">
+                    <img src="{{ asset('movies-imgs/posters/' . $movie->movie_poster . '') }}" alt="" class="movie-box-img" loading="lazy">
+                    <div class="box-text">
+                        <h2 class="movie-title">
+                            {{ $movie->movie_name }}
+                        </h2>
+                        <span class="movie-type">
+                            {{ $movie->category }}
+                        </span>
+                        <a href="{{ route('user.play-page',['movie_id'=>$movie->id]) }}"class="watch-btn play-btn">
+                            <i class="bx bx-right-arrow"></i>
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="movie-box">
-                <img src="{{ asset('img/movie-2.jpg') }}" alt="" class="movie-box-img" loading="lazy">
-                <div class="box-text">
-                    <h2 class="movie-title">
-                        Jumanji - welcome to the jungle
-                    </h2>
-                    <span class="movie-type">
-                        Adventure
-                    </span>
-                    <a href="{{ route('user.play-page') }}"class="watch-btn play-btn">
-                        <i class="bx bx-right-arrow"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="movie-box">
-                <img src="{{ asset('img/movie-3.jpg') }}" alt="" class="movie-box-img" loading="lazy">
-                <div class="box-text">
-                    <h2 class="movie-title">
-                        Jumanji - welcome to the jungle
-                    </h2>
-                    <span class="movie-type">
-                        Adventure
-                    </span>
-                    <a href="{{ route('user.play-page') }}"class="watch-btn play-btn">
-                        <i class="bx bx-right-arrow"></i>
-                    </a>
-                </div>
-            </div>
+            @endforeach
         </div>
     </section>
 @endsection

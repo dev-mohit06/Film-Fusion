@@ -428,4 +428,81 @@ class UserController extends Controller
 
         return "1";
     }
+
+    // for website aka withlogin
+    public function returnSettings(){
+        $user_data = DB::table('users')->where('id','=',session()->get('id'))->first();
+
+        return view('with-login.settings',['user_data'=>$user_data]);
+    }
+
+    public function returnEditProfile(){
+        $user_data = DB::table('users')->where('id','=',session()->get('id'))->first();
+
+        return view('with-login.edit-profile',['user_data'=>$user_data]);
+    }
+
+    public function updateProfile(Request $request){
+        
+
+        $is_userExist = DB::table('users')
+            ->where(function ($query) use ($request) {
+                $query->where('username', '=', $request->username)
+                    ->orWhere('email', '=', $request->email);
+            })
+            ->where('email', '!=', session()->get('email'))
+            ->where('username', '!=', session()->get('username'))
+            ->count();
+
+        if($is_userExist){
+            return -1;
+        }else{
+            $oldData = DB::table('users')->where('id','=',session()->get('id'))->first();
+    
+            if($request->hasFile('profile_picture')){
+                $file = $request->file('profile_picture');
+                $profilePicture = uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('/users/profile_pictures/'), $profilePicture);
+                unlink(public_path('/users/profile_pictures/' . $oldData->profile_picture . ''));
+            }else{
+                $profilePicture = $oldData->profile_picture;
+            }
+    
+            if($request->password != ""){
+                $newPassword = bcrypt($request->password);
+            }else{
+                $newPassword = $oldData->password;
+            }
+
+            DB::table('users')->where('id','=',session()->get('id'))->update([
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => $newPassword,
+                'profile_picture' => $profilePicture
+            ]);
+            
+            session()->remove('username');
+            session()->put('username',$request->username);
+            session()->remove('email');
+            session()->put('email',$request->email);
+            session()->remove('dp');
+            session()->put('dp',$profilePicture);
+
+            return 1;
+        }
+
+
+
+
+    }
+
+    public function deleteCurrentUser(){
+        $id = session()->get('id');
+
+        DB::table('users')->where('id','=',$id)->update([
+            'account_status' => -1,
+        ]);
+
+        return redirect()->route('logout');
+    }
 }

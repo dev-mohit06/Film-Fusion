@@ -5,7 +5,6 @@ namespace App\Http\Controllers\AdminControllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rules\Unique;
 
 class MoviesController extends Controller
 {
@@ -194,7 +193,7 @@ class MoviesController extends Controller
 
             unlink(public_path('/movies-imgs/posters/' . $oldPoster . ''));
 
-            $newBanner->move(public_path('/movies-imgs/posters/'),$newPosterName);
+            $newPoster->move(public_path('/movies-imgs/posters/'),$newPosterName);
         }else{
             $newPosterName = $oldMovie->movie_poster;
         }
@@ -236,5 +235,27 @@ class MoviesController extends Controller
 
         DB::table('movies')->where('id','=',$delete_id)->delete();
         return true;
+    }
+
+    //it is for website aka with-login
+
+    public function returnMoviesAccordingUi(){
+        $sliderMovies = DB::table('movies')->where('ott_category','=','slider')->get();
+        $popularMovies = DB::table('movies')->where('ott_category','=','popular')->get();
+        $allMovies = DB::table('movies')->get();
+
+
+        return view('with-login.index',['sliderMovies'=>$sliderMovies,'popularMovies'=>$popularMovies,'allMovies'=>$allMovies]);
+    }
+
+    public function returnSpecificMovie(String $movie_id = null){
+        $isExsist = DB::table('movies')->where('id','=',$movie_id)->count();
+
+        if(!$isExsist || $movie_id == null){
+            return redirect()->route('user.home');
+        }else{
+            $movie_data = DB::table('movies')->where('id','=',$movie_id)->first();
+            return view('with-login.play-page',['movie_data'=>$movie_data]);
+        }
     }
 }

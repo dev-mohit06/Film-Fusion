@@ -18,12 +18,12 @@
     <!-- Moive Section -->
     <div class="play-container container">
         <!-- Play movie image -->
-        <img src="{{ asset('img/play-background.jpg') }}" alt="" class="play-img" loading="lazy">
+        <img src="{{ asset('movies-imgs/banners/' . $movie_data->movie_banner . '') }}" alt="" class="play-img" loading="lazy">
         <!-- Play Text -->
         <div class="play-text">
-            <h2>Jumanji: Welcome to the Jungel</h2>
+            <h2>{{ $movie_data->movie_name }}</h2>
             <div class="tags">
-                <span>Action</span>
+                <span>{{ $movie_data->category }}</span>
             </div>
         </div>
         <!-- Movie Watch Button -->
@@ -32,7 +32,7 @@
         <div class="video-container">
             <!-- Video-Box -->
             <div class="video-box">
-                <video id="myvideo" src="{{ asset('movies/Jumanji.mp4') }}" controls></video>
+                <video id="myvideo" src="{{ asset('movies/'.$movie_data->movie_file.'') }}" controls></video>
                 <!-- Close Video Icon -->
                 <i class="bx bx-x close-video"></i>
             </div>
@@ -62,12 +62,11 @@
             </div>
         </div>
         <h2>
-            Jumanji: Welcome to the Jungel
+            {{ $movie_data->movie_name }}
         </h2>
         <p>
-            Four high schoolers discover an old video game console and are transported into its jungle world. To escape,
-            they must survive dangerous challenges, uncover forgotten secrets, and change their perspectives. Failure
-            means being stuck forever.
+            {{ $movie_data->movie_description }}
+
         </p>
     </div>
 
@@ -76,7 +75,7 @@
         <h2 class="download-title">
             Download Movie
             <div class="download-links">
-                <a href="{{ asset('movies/Jumanji.mp4') }}" download>Download</a>
+                <a href="{{ asset('movies/'.$movie_data->movie_file.'') }}" download>Download</a>
             </div>
         </h2>
     </div>

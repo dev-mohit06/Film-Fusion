@@ -92,6 +92,10 @@
                         <span class="material-symbols-rounded">loyalty</span>
                         <h3>Refrel Histroy</h3>
                     </a>
+                    <a href="{{ route('user.home') }}">
+                        <span class="material-symbols-rounded">reply</span>
+                        <h3>Goto Website</h3>
+                    </a>
                     <a href="{{ route('logout') }}">
                         <span class="material-symbols-rounded">logout</span>
                         <h3>Logout</h3>

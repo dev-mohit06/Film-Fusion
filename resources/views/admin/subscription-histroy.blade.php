@@ -25,6 +25,7 @@
                         <th> Subscription Type </th>
                         <th> Purchase date </th>
                         <th> Expire date </th>
+                        <th> Status </th>
                     </tr>
                 </thead>
                 <tbody class="table-data"></tbody>

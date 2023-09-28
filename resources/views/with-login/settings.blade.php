@@ -90,7 +90,7 @@
                             if you want to delete your account then your subscription also canclled!
                         </p>
 
-                        <a href="#" class="card__button">
+                        <a href="{{ route('user.settings.delete') }}" class="card__button">
                             Delete
                         </a>
                     </div>
