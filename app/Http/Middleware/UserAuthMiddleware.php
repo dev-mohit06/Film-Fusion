@@ -76,7 +76,9 @@ class UserAuthMiddleware
                     'home',
                     'user-create',
                     'activate/*',
-                    'login'
+                    'login',
+                    'forget-password',
+                    'change-password',
                 ];
                 foreach ($redirectPaths as $pattern) {
                     if ($request->is($pattern)) {
@@ -101,8 +103,6 @@ class UserAuthMiddleware
                 'checkout',
                 'afterCheckout',
                 'applyCoupn',
-                'forget-password',
-                'change-password',
             ];
 
             foreach ($restrictedPaths as $pattern) {
