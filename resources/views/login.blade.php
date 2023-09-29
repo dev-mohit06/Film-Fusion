@@ -14,6 +14,7 @@
         <div class="box">
             <div class="inner-box">
                 <div class="forms-wrap">
+                    {{-- Login Form --}}
                     <form autocomplete="off" class="sign-in-form" id="sign-in-form" method="POST">
                         @csrf
                         <div class="logo">
@@ -46,11 +47,12 @@
 
                             <p class="text">
                                 Forgotten your password or you login datails?
-                                <a href="#">Get help</a> signing in
+                                <a href="{{ route('forget_password') }}">Get help</a> signing in
                             </p>
                         </div>
                     </form>
 
+                    {{-- Registration Form --}}
                     <form autocomplete="off" class="sign-up-form" enctype="multipart/form-data" id="sign-up-form">
                         @csrf
                         <div class="logo">
@@ -171,5 +173,44 @@
                 });
             </script>
         @endpush
+    @endif
+
+    @if (session()->has('token_expire'))
+        <script>
+            const Toast = new Notyf({
+                duration: 3000,
+                position: {
+                    x: 'center',
+                    y: 'top',
+                },
+            });
+            Toast.error("Activation link is expired, Please try again!!");
+        </script>
+    @endif
+
+    @if (session()->has('token_not_found'))
+        <script>
+            const Toast = new Notyf({
+                duration: 3000,
+                position: {
+                    x: 'center',
+                    y: 'top',
+                },
+            });
+            Toast.error("Invalid Link, Please try again!!");
+        </script>
+    @endif
+
+    @if (session()->has('password_update'))
+        <script>
+            const Toast = new Notyf({
+                duration: 3000,
+                position: {
+                    x: 'center',
+                    y: 'top',
+                },
+            });
+            Toast.success("Password change successfully!!");
+        </script>
     @endif
 @endpush

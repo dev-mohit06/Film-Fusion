@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\User;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Request;
@@ -57,7 +56,13 @@ class UserAuthMiddleware
                     'checkout',
                     'afterCheckout',
                     'applyCoupn',
+                    'forget-password',
+                    'change-password',
                 ];
+
+                if($isSubscriberOrAdmin && $request->is('home')){
+                    return redirect()->route('user.home');
+                }
 
                 foreach ($redirectPaths as $pattern) {
                     if ($request->is($pattern)) {
@@ -96,6 +101,8 @@ class UserAuthMiddleware
                 'checkout',
                 'afterCheckout',
                 'applyCoupn',
+                'forget-password',
+                'change-password',
             ];
 
             foreach ($restrictedPaths as $pattern) {

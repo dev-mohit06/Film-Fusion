@@ -23,7 +23,7 @@ class DiscountController extends Controller
         $price = $planData->plan_price;
 
         // Fethc the count if count == 0 then it will break other wise continue
-        $isValidCoupen = DB::table('offers')->where('offer_code', '=', $request->coupnCode)->where('count', '!=', '0')->count();
+        $isValidCoupen = DB::table('offers')->where('offer_code', '=', $request->coupnCode)->where('count', '!=', '0')->where('offer_status','=','1')->count();
 
         // it will check inside the offers tabel if it's valid coupn code then it will continue.
         if ($isValidCoupen) {

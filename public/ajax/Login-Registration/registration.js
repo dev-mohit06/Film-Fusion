@@ -92,7 +92,7 @@ $(document).ready(function () {
                         message: 'Account creating...',
                         background: 'blue',
                         duration: 0,
-                    })
+                    });
                 },
                 success: function (response) {
                     if (response == 1) {

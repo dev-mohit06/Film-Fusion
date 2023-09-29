@@ -33,7 +33,7 @@ class UserController extends Controller
             if ($request->hasFile('profile_picture')) {
                 $request->file('profile_picture')->move(public_path('/users/profile_pictures/'), $fileName);
             }
-            if (AccountContorller::sendEmail($request->email)) {
+            if (AccountContorller::sendVerificationEmail($request->email)) {
                 return 1;
             }
         } else {

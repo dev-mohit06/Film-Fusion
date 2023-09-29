@@ -9,8 +9,6 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-
-
 Route::middleware('UserAuth')->group(function () {
 
 
@@ -109,6 +107,19 @@ Route::middleware('UserAuth')->group(function () {
             return view('login');
         }
     })->name('login');
+
+    Route::get('/forget-password',function(){
+        return view('forgot_password');
+    })->name('forget_password');
+    Route::post('/sendForgetLink',[AccountContorller::class,'sendResetLink'])->name('forget_password.sendLink');
+    Route::get('/verifyResetLink/{token}',[AccountContorller::class,'verifyResetLink'])->name('forget_password.verifylink');
+    Route::get('/change-password',function(){
+        if(!session()->has('forgot_password_user_id')){
+            return redirect()->route('login');
+        }
+        return view('reset_password');
+    })->name('forget_password.update_password');
+    Route::post('/changePassword',[AccountContorller::class,'changePassword'])->name('forget_password.update');
 
 
     // Action Performing routes

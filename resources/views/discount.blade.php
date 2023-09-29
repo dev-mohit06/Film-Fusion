@@ -16,7 +16,6 @@
         {{ session()->put('plan_duration', $planDetails->plan_duration * 30) }}
         {{ session()->put('plan_name', $planDetails->plan_name) }}
         {{ session()->put('plan_price', $planDetails->plan_price) }}
-        {{ session()->put('is_downloadable', $planDetails->is_downloadable) }}
         <div class="discount__container container grid">
             <div class="discount__animate">
                 <h2 class="discount__title">Current Plan is <span id="currentPlan">₹{{ $planDetails->plan_price }}</span>

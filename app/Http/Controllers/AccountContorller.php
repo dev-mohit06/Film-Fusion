@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\AccountVerificationMail;
+use App\Mail\ResetPasswordMail;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -18,7 +20,7 @@ class AccountContorller extends Controller
         return  uniqid() . Str::random(16);
     }
 
-    public static function sendEmail(string $email)
+    public static function sendVerificationEmail(string $email)
     {
         $mailData = [];
         $user = DB::table('users')->select('username', 'email', 'verification_token')->where('email', '=', $email)->get();
@@ -105,7 +107,7 @@ class AccountContorller extends Controller
                 }
                 // New User but account is not activated.
                 else if (Hash::check($password, $encryptedPassword) && $accountStatus == 0) {
-                    self::sendEmail($email);
+                    self::sendVerificationEmail($email);
                     return 4;
                 }
                 // User doesn't exsist 
@@ -129,5 +131,73 @@ class AccountContorller extends Controller
         session()->remove('role');
 
         return redirect()->route('login');
+    }
+
+    //forget password
+    public function sendResetLink(Request $request)
+    {
+        $is_exsist = DB::table('users')->where('email', '=', $request->email)->count();
+
+        if ($is_exsist) {
+            $user = DB::table('users')->where('email', '=', $request->email)->first();
+
+            $username = $user->username;
+            $token = self::verificationToken();
+
+            $mailData = [
+                'username' => $username,
+                'token' => $token,
+            ];
+
+            $isTokenExsist = DB::table('reset_passwords_tokens')->where('user_id', '=', $user->id)->count();
+            if ($isTokenExsist) {
+                DB::table('reset_passwords_tokens')->where('user_id', '=', $user->id)->delete();
+            }
+
+            DB::table('reset_passwords_tokens')->insert([
+                'user_id' => $user->id,
+                'token' => $token,
+                'expire_time' => Carbon::now()->addMinutes(10),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            mail::to($request->email)->send(new ResetPasswordMail($mailData));
+
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+
+    public function verifyResetLink(Request $request)
+    {
+        $is_token_exsist = DB::table('reset_passwords_tokens')->where('token', '=', $request->token)->count();
+        if ($is_token_exsist) {
+            $token_details = DB::table('reset_passwords_tokens')->where('token', '=', $request->token)->first();
+
+            if (Carbon::now()->gt($token_details->expire_time)) {
+                DB::table('reset_passwords_tokens')->where('token', '=', $token_details->token)->delete();
+                Session::flash('token_expire', "Activation link is expired, Please try again!!");
+                return redirect()->route('login');
+            } else {
+                session()->put('forgot_password_user_id', $token_details->user_id);
+                DB::table('reset_passwords_tokens')->where('token', '=', $token_details->token)->delete();
+                return redirect()->route('forget_password.update_password');
+            }
+        } else {
+            Session::flash('token_not_found', "Activation link is expired or invalid, Please try again!!");
+            return redirect()->route('login');
+        }
+    }
+    public function changePassword(Request $request)
+    {
+        $user_id = session()->get('forgot_password_user_id');
+        session()->remove('forgot_password_user_id');
+        DB::table('users')->where('id', '=', $user_id)->update([
+            'password' => bcrypt($request->password),
+        ]);
+        Session::flash('password_update', "Password change successfully!!");
+        return "1";
     }
 }
