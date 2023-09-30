@@ -119,7 +119,7 @@ Route::middleware('UserAuth')->group(function () {
         }
         return view('reset_password');
     })->name('forget_password.update_password');
-    Route::post('/changePassword',[AccountContorller::class,'changePassword'])->name('forget_password.update');
+    Route::post('/change-password',[AccountContorller::class,'changePassword'])->name('forget_password.update');
 
 
     // Action Performing routes
