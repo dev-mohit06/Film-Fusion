@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text("features")->nullable(false);
             $table->integer("plan_price")->nullable(false);
             $table->integer("plan_duration")->nullable(false);
+            $table->integer("status")->default(1);
             $table->timestamps();
         });
     }

@@ -108,7 +108,7 @@ class SubscriptionController extends Controller
             if($record->is_active){
                 $status = "<td class='active'>Active</td>";
             }else{
-                $status = "<td class='deactive'>Deactive</td>";
+                $status = "<td class='deactive'>Expired</td>";
             }
 
             $output .= '<tr>

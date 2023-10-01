@@ -76,6 +76,10 @@
                         <span class="material-symbols-rounded">movie_edit</span>
                         <h3>Manage Movies</h3>
                     </a>
+                    <a href="{{ route('admin.plans') }}">
+                        <span class="material-symbols-rounded">view_carousel</span>
+                        <h3>Manage Plans</h3>
+                    </a>
                     <a href="{{ route('admin.offers') }}">
                         <span class="material-symbols-rounded">universal_currency_alt</span>
                         <h3>Manage offers</h3>

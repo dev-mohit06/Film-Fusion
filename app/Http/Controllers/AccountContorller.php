@@ -182,7 +182,6 @@ class AccountContorller extends Controller
                 return redirect()->route('login');
             } else {
                 session()->put('forgot_password_user_id', $token_details->user_id);
-                DB::table('reset_passwords_tokens')->where('token', '=', $token_details->token)->delete();
                 return redirect()->route('forget_password.update_password');
             }
         } else {
@@ -190,6 +189,7 @@ class AccountContorller extends Controller
             return redirect()->route('login');
         }
     }
+
     public function changePassword(Request $request)
     {
         $user_id = session()->get('forgot_password_user_id');
@@ -197,7 +197,10 @@ class AccountContorller extends Controller
         DB::table('users')->where('id', '=', $user_id)->update([
             'password' => bcrypt($request->password),
         ]);
+        $token_details = DB::table('reset_passwords_tokens')->where('user_id', '=', $user_id)->first();
+        DB::table('reset_passwords_tokens')->where('token', '=', $token_details->token)->delete();
         Session::flash('password_update', "Password change successfully!!");
         return "1";
     }
+
 }

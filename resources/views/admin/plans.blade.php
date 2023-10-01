@@ -65,43 +65,29 @@
     <!-- ========== Starting of Add user form ========== -->
     <div class="user-add-form" id="add-form">
         <section class="form-container">
-            <h1>Add User</h1>
+            <h1>Add Plan</h1>
             <div class="close-popup" id="adduser_popup_close">
                 <span class="material-symbols-rounded">close</span>
             </div>
             <form class="form" id="insert-user-form">
                 @csrf
                 <div class="input-box">
-                    <label>Offer Name</label>
-                    <input type="text" placeholder="Enter the offer name" id="offer-name" name="offer_name" required />
-                    {{-- <span class="err" id="err-offer-name"></span> --}}
+                    <label>Plan Name</label>
+                    <input type="text" placeholder="Enter the offer name" id="plan-name" name="plan_name" required />
                 </div>
                 <div class="input-box">
-                    <label>Offer Code</label>
-                    <input type="text" placeholder="Enter the offer code" name="offer_code" id="offer-code" />
-                    {{-- <span class="err" id="err-offer-name"></span> --}}
+                    <label>Plan Features</label>
+                    <input type="text" placeholder="Enter the offer code" name="features" id="plan-features" required />
                 </div>
                 <div class="input-box">
-                    <label>Discount Percentage</label>
-                    <input type="number" placeholder="Enter the discount percentage" name="discount_percentage"
-                        id="offer-price" />
-                    {{-- <span class="err" id="err-offer-name"></span> --}}
+                    <label>Plan Duration</label>
+                    <input type="number" placeholder="Enter the discount percentage" name="plan_duration"
+                        id="plan-duration" required />
                 </div>
                 <div class="input-box">
-                    <label>Add number of usage</label>
-                    <input type="number" placeholder="Enter the number of usage" name="count" id="offer-number" />
-                    {{-- <span class="err" id="err-offer-name"></span> --}}
-                </div>
-                <div class="input-box">
-                    <label>Status</label>
-                    <div class="select-box">
-                        <select required="" name="offer_status">
-                            <option disabled>Status</option>
-                            <option value="1" selected="">Active</option>
-                            <option value="0">Deactive</option>
-                            <option value="-1">Delete</option>
-                        </select>
-                    </div>
+                    <label>Plan Price</label>
+                    <input type="number" placeholder="Enter the number of usage" name="plan_price" id="plan-price"
+                        required />
                 </div>
                 <button>Submit</button>
             </form>
@@ -112,11 +98,13 @@
     <!-- ========== Starting of Update user form ========== -->
     <div class="user-update-form" id="update-form">
         <section class="form-container">
-            <h1>Update user</h1>
+            <h1>Update plans</h1>
             <div class="close-popup" id="updateuser_popup_close">
                 <span class="material-symbols-rounded">close</span>
             </div>
-            <div class="duf"></div>
+            <div class="duf">
+
+            </div>
             <div class="data-loader">
                 <div class="lds-roller">
                     <div></div>
@@ -136,7 +124,6 @@
 
 @push('scripts')
     <script src="{{ asset('js/resulable/sidebar.js') }}"></script>
-    {{-- <script src="{{ asset('js/admin-users.js') }}"></script> --}}
-
-    <script src="{{ asset('ajax/Offers/offers.js') }}"></script>
+    <script src="{{ asset('ajax/url.js') }}"></script>
+    <script src="{{ asset('ajax/Plans/plan.js') }}"></script>
 @endpush
