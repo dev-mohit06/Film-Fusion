@@ -78,7 +78,7 @@ Route::middleware('UserAuth')->group(function () {
             return view('admin.plans');
         })->name('admin.plans');
         Route::get('/getAllPlans', [PlanController::class, 'getPlansTable'])->name('admin.plans.getAll');
-        Route::post('/insertPlan', [PlanController::class, 'createNewPlan'])->name('admin.plans.insert');
+        Route::post('/insertPlan', [PlanController::class, 'insert'])->name('admin.plans.insert');
         Route::get('/getPlanUpdateForm', [PlanController::class, 'getUpdateForm'])->name('admin.plans.getUpdateForm');
         Route::post('/updatePlan', [PlanController::class, 'update'])->name('admin.plans.update');
         Route::get('/deletePlan', [PlanController::class, 'delete'])->name('admin.plans.delete');

@@ -66,6 +66,9 @@ $("#adduser_popup").on("click", function() {
                 loadPlans();
                 closePopup("#backdrop", "#add-form", "backdrop-show",
                     "form-show", ".dif");
+            },
+            error : function(err){
+                console.log(err);
             }
         });
     });
