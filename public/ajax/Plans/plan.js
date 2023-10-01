@@ -26,10 +26,10 @@ function loadPlans() {
     $.ajax({
         type: "GET",
         url: url + "admin/getAllPlans",
-        success: function(response) {
+        success: function (response) {
             $(".table-data").html(response);
         },
-        error: function(err) {
+        error: function (err) {
             console.log(err);
         }
     });
@@ -37,10 +37,10 @@ function loadPlans() {
 loadPlans();
 
 // insert
-$("#adduser_popup").on("click", function() {
+$("#adduser_popup").on("click", function () {
     showPopup("#backdrop", "#add-form", "backdrop-show", "form-show");
 
-    $("#insert-user-form").on("submit", function(e) {
+    $("#insert-user-form").on("submit", function (e) {
         e.preventDefault();
 
         let form = $("#insert-user-form")[0];
@@ -52,7 +52,7 @@ $("#adduser_popup").on("click", function() {
             data: formData,
             contentType: false,
             processData: false,
-            beforeSend: function() {
+            beforeSend: function () {
                 waitingMessage = Toast.open({
                     type: 'info',
                     message: "Just a moment...",
@@ -60,29 +60,30 @@ $("#adduser_popup").on("click", function() {
                     duration: 0,
                 });
             },
-            success: function(response) {
+            success: function (response) {
                 Toast.dismiss(waitingMessage);
                 Toast.success("Plan Created!!");
                 loadPlans();
                 closePopup("#backdrop", "#add-form", "backdrop-show",
                     "form-show", ".dif");
+                form.reset();
             },
-            error : function(err){
+            error: function (err) {
                 console.log(err);
             }
         });
     });
 
 });
-$("#backdrop").on("click", function() {
+$("#backdrop").on("click", function () {
     closePopup("#backdrop", "#add-form", "backdrop-show", "form-show", ".dif");
 });
-$("#adduser_popup_close").on("click", function() {
+$("#adduser_popup_close").on("click", function () {
     closePopup("#backdrop", "#add-form", "backdrop-show", "form-show", ".dif");
 });
 
 //update
-$(document).on("click", "#update-btn", function() {
+$(document).on("click", "#update-btn", function () {
     let plan_id = $(this).data("update_id");
     $.ajax({
         type: "GET",
@@ -90,16 +91,16 @@ $(document).on("click", "#update-btn", function() {
         data: {
             plan_id: plan_id,
         },
-        beforeSend: function() {
+        beforeSend: function () {
             $(".data-loader").show();
             showPopup("#backdrop", "#update-form", "backdrop-show", "form-show");
         },
-        success: function(response) {
+        success: function (response) {
             $(".data-loader").hide();
             $(".duf").html(response);
 
 
-            $("#update-user-form").on("submit", function(e) {
+            $("#update-user-form").on("submit", function (e) {
                 e.preventDefault();
 
                 let form = $("#update-user-form")[0];
@@ -111,7 +112,7 @@ $(document).on("click", "#update-btn", function() {
                     data: formData,
                     contentType: false,
                     processData: false,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         waitingMessage = Toast.open({
                             type: 'info',
                             message: "Just a moment...",
@@ -119,7 +120,7 @@ $(document).on("click", "#update-btn", function() {
                             duration: 0,
                         });
                     },
-                    success: function(response) {
+                    success: function (response) {
                         Toast.dismiss(waitingMessage);
                         Toast.success(
                             "Plan details update successfully"
@@ -132,20 +133,20 @@ $(document).on("click", "#update-btn", function() {
                 });
             });
         },
-        error: function(err) {
+        error: function (err) {
             console.log(err);
         }
     });
 });
-$("#updateuser_popup_close").on("click", function() {
+$("#updateuser_popup_close").on("click", function () {
     closePopup("#backdrop", "#update-form", "backdrop-show", "form-show", ".duf");
 });
-$("#backdrop").on("click", function() {
+$("#backdrop").on("click", function () {
     closePopup("#backdrop", "#update-form", "backdrop-show", "form-show", ".duf");
 });
 
 //delete
-$(document).on("click", "#delete-btn", function() {
+$(document).on("click", "#delete-btn", function () {
     let plan_id = $(this).data("delete_id");
     let con = confirm("Are you sure");
 
@@ -156,7 +157,7 @@ $(document).on("click", "#delete-btn", function() {
             data: {
                 plan_id: plan_id,
             },
-            beforeSend: function() {
+            beforeSend: function () {
                 waitingMessage = Toast.open({
                     type: 'info',
                     message: "Just a moment...",
@@ -164,7 +165,7 @@ $(document).on("click", "#delete-btn", function() {
                     duration: 0,
                 });
             },
-            success: function(response) {
+            success: function (response) {
                 Toast.dismiss(waitingMessage);
                 Toast.success("Plan delete successfully");
                 loadPlans();
