@@ -118,7 +118,7 @@ class MoviesController extends Controller
         $ott_category .= '</select>';
 
         $output = '<form class="form" id="update-movie-form" enctype="multipart/form-data">
-        '.csrf_field().'
+        ' . csrf_field() . '
         <div class="input-box">
             <label>Movie Name</label>
             <input type="text" placeholder="Movie name" name="movie_name" id="update-movie-name" value="' . $movie->movie_name . '" required />
@@ -170,9 +170,9 @@ class MoviesController extends Controller
         $update_id = $request->update_id;
 
         //old movie data for image handline
-        $oldMovie = DB::table('movies')->where('id','=',$update_id)->first();
-        
-        if($request->hasFile('banner')){
+        $oldMovie = DB::table('movies')->where('id', '=', $update_id)->first();
+
+        if ($request->hasFile('banner')) {
             $oldBanner = $oldMovie->movie_banner;
 
             $newBanner = $request->file('banner');
@@ -180,12 +180,12 @@ class MoviesController extends Controller
 
             unlink(public_path('/movies-imgs/banners/' . $oldBanner . ''));
 
-            $newBanner->move(public_path('/movies-imgs/banner/'),$newBannerName);
-        }else{
+            $newBanner->move(public_path('/movies-imgs/banner/'), $newBannerName);
+        } else {
             $newBannerName = $oldMovie->movie_banner;
         }
 
-        if($request->hasFile('poster')){
+        if ($request->hasFile('poster')) {
             $oldPoster = $oldMovie->movie_poster;
 
             $newPoster = $request->file('poster');
@@ -193,12 +193,12 @@ class MoviesController extends Controller
 
             unlink(public_path('/movies-imgs/posters/' . $oldPoster . ''));
 
-            $newPoster->move(public_path('/movies-imgs/posters/'),$newPosterName);
-        }else{
+            $newPoster->move(public_path('/movies-imgs/posters/'), $newPosterName);
+        } else {
             $newPosterName = $oldMovie->movie_poster;
         }
 
-        if($request->hasFile('movie_file')){
+        if ($request->hasFile('movie_file')) {
             $oldMovieFile = $oldMovie->movie_file;
 
             $newMovieFile = $request->file('movie_file');
@@ -206,12 +206,12 @@ class MoviesController extends Controller
 
             unlink(public_path('movies/' . $oldMovieFile . ''));
 
-            $newMovieFile->move(public_path('movies/'),$newMovieFileName);
-        }else{
+            $newMovieFile->move(public_path('movies/'), $newMovieFileName);
+        } else {
             $newMovieFileName = $oldMovie->movie_file;
         }
 
-        DB::table('movies')->where('id','=',$update_id)->update([
+        DB::table('movies')->where('id', '=', $update_id)->update([
             'movie_name' => $request->movie_name,
             'movie_description' => $request->movie_desc,
             'category' => $request->category,
@@ -225,37 +225,41 @@ class MoviesController extends Controller
         return true;
     }
 
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         $delete_id = $request->delete_id;
-        $movie = DB::table('movies')->where('id','=',$delete_id)->first();
+        $movie = DB::table('movies')->where('id', '=', $delete_id)->first();
 
         unlink(public_path('/movies-imgs/posters/' . $movie->movie_poster . ''));
         unlink(public_path('/movies-imgs/banners/' . $movie->movie_banner . ''));
         unlink(public_path('movies/' . $movie->movie_file . ''));
 
-        DB::table('movies')->where('id','=',$delete_id)->delete();
+        DB::table('movies')->where('id', '=', $delete_id)->delete();
         return true;
     }
 
     //it is for website aka with-login
 
-    public function returnMoviesAccordingUi(){
-        $sliderMovies = DB::table('movies')->where('ott_category','=','slider')->get();
-        $popularMovies = DB::table('movies')->where('ott_category','=','popular')->get();
+    public function returnMoviesAccordingUi()
+    {
+        $sliderMovies = DB::table('movies')->where('ott_category', '=', 'slider')->get();
+        $popularMovies = DB::table('movies')->where('ott_category', '=', 'popular')->get();
         $allMovies = DB::table('movies')->get();
 
 
-        return view('with-login.index',['sliderMovies'=>$sliderMovies,'popularMovies'=>$popularMovies,'allMovies'=>$allMovies]);
+        return view('with-login.index', ['sliderMovies' => $sliderMovies, 'popularMovies' => $popularMovies, 'allMovies' => $allMovies]);
     }
 
-    public function returnSpecificMovie(String $movie_id = null){
-        $isExsist = DB::table('movies')->where('id','=',$movie_id)->count();
+    public function returnSpecificMovie(String $movie_id = null)
+    {
+        $isExsist = DB::table('movies')->where('id', '=', $movie_id)->count();
 
-        if(!$isExsist || $movie_id == null){
+        if (!$isExsist || $movie_id == null) {
             return redirect()->route('user.home');
-        }else{
-            $movie_data = DB::table('movies')->where('id','=',$movie_id)->first();
-            return view('with-login.play-page',['movie_data'=>$movie_data]);
+        } else {
+            $movie_data = DB::table('movies')->where('id', '=', $movie_id)->first();
+
+            return view('with-login.play-page', ['movie_data' => $movie_data]);
         }
     }
 }

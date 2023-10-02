@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountContorller;
+use App\Http\Controllers\AdminControllers\AnalyticsController;
 use App\Http\Controllers\AdminControllers\DashboardController;
 use App\Http\Controllers\AdminControllers\MoviesController;
 use App\Http\Controllers\DiscountController;
@@ -32,6 +33,8 @@ Route::middleware('UserAuth')->group(function () {
         Route::get('/deleteUser', [UserController::class, 'deleteCurrentUser'])->name('user.settings.delete');
 
         Route::get('/play-page/{movie_id?}', [MoviesController::class, 'returnSpecificMovie'])->name('user.play-page');
+        Route::get('/getAnalytics', [AnalyticsController::class, 'getAnalytics'])->name('user.play-page.getAnalytics');
+        Route::get('/giveAnalytics', [AnalyticsController::class, 'giveAnalytics'])->name('user.play-page.giveAnalytics');
 
         Route::get('/edit-profile', [UserController::class, 'returnEditProfile'])->name('user.edit-profile');
         Route::post('/updateUser', [UserController::class, 'updateProfile'])->name('user.edit-profile.updateUser');
@@ -86,6 +89,7 @@ Route::middleware('UserAuth')->group(function () {
         Route::get('/analytics', function () {
             return view('admin.analytics');
         })->name('admin.analytics');
+        Route::get('/getAnalyticsRecords',[AnalyticsController::class,'loadAnalytics'])->name('admin.analytics.getAll');
 
         Route::get('/subscription-histroy', function () {
             return view('admin.subscription-histroy');

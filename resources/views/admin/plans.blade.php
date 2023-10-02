@@ -123,6 +123,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/resulable/sidebar.js') }}"></script>
     <script src="{{ asset('ajax/Plans/plan.js') }}"></script>
 @endpush

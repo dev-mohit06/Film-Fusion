@@ -136,8 +136,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/resulable/sidebar.js') }}"></script>
-    {{-- <script src="{{ asset('js/admin-users.js') }}"></script> --}}
-
     <script src="{{ asset('ajax/Offers/offers.js') }}"></script>
 @endpush

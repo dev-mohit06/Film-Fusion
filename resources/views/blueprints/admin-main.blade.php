@@ -153,6 +153,7 @@
 
     {{-- Needed scripts --}}
     <script src="{{ asset('ajax/url.js') }}"></script>
+    <script src="{{ asset('js/resulable/sidebar.js') }}"></script>
     @stack('scripts')
 </body>
 

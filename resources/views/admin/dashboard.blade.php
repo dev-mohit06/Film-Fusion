@@ -74,7 +74,3 @@
         </table>
     </div>
 @endsection
-
-@push('scripts')
-    <script src="{{ asset('js/resulable/sidebar.js') }}"></script>
-@endpush

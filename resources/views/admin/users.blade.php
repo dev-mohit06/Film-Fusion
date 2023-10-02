@@ -111,6 +111,5 @@
     <!-- ========== End of Update user form ========== -->
 @endsection
 @push('scripts')
-    <script src="{{ asset('js/resulable/sidebar.js') }}"></script>
     <script src="{{ asset('ajax/Admin/Users/users.js') }}"></script>
 @endpush

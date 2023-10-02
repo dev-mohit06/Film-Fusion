@@ -35,6 +35,5 @@
     <!-- ========== End of Table ========== -->
 @endsection
 @push('scripts')
-    <script src="{{ asset('js/resulable/sidebar.js') }}"></script>
     <script src="{{ asset('ajax/Subscription-histroy/subscription-histroy.js') }}"></script>
 @endpush
