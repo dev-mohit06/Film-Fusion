@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Session;
 class AccountContorller extends Controller
 {
 
-    public static function verificationToken()
+    public static function getVerificationToken()
     {
         return  uniqid() . Str::random(16);
     }
@@ -142,7 +142,7 @@ class AccountContorller extends Controller
             $user = DB::table('users')->where('email', '=', $request->email)->first();
 
             $username = $user->username;
-            $token = self::verificationToken();
+            $token = self::getVerificationToken();
 
             $mailData = [
                 'username' => $username,
