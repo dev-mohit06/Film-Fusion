@@ -463,7 +463,11 @@ class UserController extends Controller
                 $file = $request->file('profile_picture');
                 $profilePicture = uniqid() . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path('/users/profile_pictures/'), $profilePicture);
-                unlink(public_path('/users/profile_pictures/' . $oldData->profile_picture . ''));
+
+                if($oldData->profile_picture != "deafult.jpg"){
+                    unlink(public_path('/users/profile_pictures/' . $oldData->profile_picture . ''));
+                }
+
             }else{
                 $profilePicture = $oldData->profile_picture;
             }
