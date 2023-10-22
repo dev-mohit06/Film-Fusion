@@ -38,6 +38,7 @@ class UserController extends Controller
             if (AccountContorller::sendVerificationEmail($request->email)) {
                 if (session()->has('refree_person')) {
                     $referrer_preson_data = session()->get('refree_person');
+                    $referrer_preson_code = session()->get('referral_code');
                     $referrer_preson_active_subscription = DB::table('subscriptions')->where('user_id', '=', $referrer_preson_data->id)->where('is_active', '=', '1')->first();
 
                     if ($referrer_preson_active_subscription) {
@@ -48,7 +49,7 @@ class UserController extends Controller
 
                         $current_user_data = DB::table('users')->where('email', '=', $request->email)->first();
 
-                        DB::table('referrals')->where('referrer_id', '=', $referrer_preson_data->id)->update([
+                        DB::table('referrals')->where('referrer_id', '=', $referrer_preson_data->id)->where('referral_code','=',$referrer_preson_code)->update([
                             'referee_id' => $current_user_data->id,
                             'status' => 1,
                         ]);
