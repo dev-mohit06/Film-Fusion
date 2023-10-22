@@ -45,7 +45,7 @@ class ReferralController extends Controller
         if ($refCode == null) {
             if (session()->has('refree_preson')) {
                 session()->remove('refree_preson');
-                session()->remove('refrel_code');
+                session()->remove('referral_code');
             }
             return view('login');
         } else {
@@ -53,7 +53,7 @@ class ReferralController extends Controller
             if ($referral_data) {
                 $user_data = DB::table('users')->where('id', '=', $referral_data->referrer_id)->first();
                 session()->put('refree_person', $user_data);
-                session()->put('refrel_code', $referral_data->referral_code);
+                session()->put('referral_code', $refCode);
                 return view('login');
             } else {
                 return redirect('/');

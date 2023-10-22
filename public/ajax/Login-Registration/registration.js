@@ -102,7 +102,7 @@ $(document).ready(function () {
                         });
                         Toast.dismiss(accountCreatingMessage);
                         setTimeout(() => {
-                            location.reload();
+                            window.location.href = url + "login";
                         }, 3000);
                     } else if (response == 0) {
                         errorMessage = Toast.error({
