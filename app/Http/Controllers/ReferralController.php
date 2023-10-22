@@ -43,8 +43,8 @@ class ReferralController extends Controller
     public function verify(string $refCode = null)
     {
         if ($refCode == null) {
-            if (session()->has('refree_preson')) {
-                session()->remove('refree_preson');
+            if (session()->has('refree_person')) {
+                session()->remove('refree_person');
                 session()->remove('refrel_code');
             }
             return view('login');
