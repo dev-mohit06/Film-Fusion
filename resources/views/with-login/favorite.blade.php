@@ -6,7 +6,7 @@
 
 
 @section('title')
-    Watch Later
+    Favorite
 @endsection
 
 @section('container')
@@ -24,34 +24,27 @@
         <!-- Movie Content -->
         <div class="movies-content">
             <!-- Movie Box -->
-            <div class="movie-box">
-                <img src="{{ asset('img/movie-6.jpg') }}" alt="" class="movie-box-img" loading="lazy">
-                <div class="box-text">
-                    <h2 class="movie-title">
-                        Money Heist
-                    </h2>
-                    <span class="movie-type">
-                        Suspense
-                    </span>
-                    <a href="{{ route('user.play-page') }}" class="watch-btn play-btn">
-                        <i class="bx bx-right-arrow"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="movie-box">
-                <img src="{{ asset('img/movie-7.jpg') }}" alt="" class="movie-box-img" loading="lazy">
-                <div class="box-text">
-                    <h2 class="movie-title">
-                        The Wolverine
-                    </h2>
-                    <span class="movie-type">
-                        Action
-                    </span>
-                    <a href="{{ route('user.play-page') }}" class="watch-btn play-btn">
-                        <i class="bx bx-right-arrow"></i>
-                    </a>
-                </div>
-            </div>
+            @if ($movie_count)
+                @foreach ($favorites as $movie)
+                    <div class="movie-box">
+                        <img src="{{ asset('movies-imgs/posters/' . $movie->movie_poster . '') }}" alt=""
+                            class="movie-box-img" loading="lazy">
+                        <div class="box-text">
+                            <h2 class="movie-title">
+                                {{ $movie->movie_name }}
+                            </h2>
+                            <span class="movie-type">
+                                {{ $movie->category }}
+                            </span>
+                            <a href="{{ route('user.play-page', ['movie_id' => $movie->id]) }}" class="watch-btn play-btn">
+                                <i class="bx bx-right-arrow"></i>
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <p class="heading-title" style="text-align: center; margin-top: 3rem;">No movies found!!</p>
+            @endif
         </div>
     </section>
 @endsection

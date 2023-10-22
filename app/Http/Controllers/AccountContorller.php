@@ -122,14 +122,7 @@ class AccountContorller extends Controller
 
     public function logout()
     {
-        session()->remove('login');
-        session()->remove('id');
-        session()->remove('username');
-        session()->remove('email');
-        session()->remove('dp');
-        session()->remove('subscription_status');
-        session()->remove('role');
-
+        Session::flush();
         return redirect()->route('login');
     }
 
@@ -202,5 +195,4 @@ class AccountContorller extends Controller
         Session::flash('password_update', "Password change successfully!!");
         return "1";
     }
-
 }

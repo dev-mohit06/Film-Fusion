@@ -111,10 +111,13 @@
             <h1 class="modal__title">Good Job!</h1>
             <p class="modal__description">People you add will recive an invite automatically</p>
 
-            <input type="text" placeholder="Enter the email address" class="modal__button modal__button-width">
-            <button class="modal__button-link">
-                Send
-            </button>
+            <form id="send-invitation">
+                <input type="email" id="email" required placeholder="Enter the email address"
+                    class="modal__button modal__button-width">
+                <button class="modal__button-link" type="submit">
+                    Send
+                </button>
+            </form>
         </div>
     </div>
 @endsection
@@ -123,4 +126,7 @@
 @push('scripts')
     <!-- ========== JAVASCRIPTS ========== -->
     <script src="{{ asset('js/settingModal.js') }}"></script>
+
+    <script src="{{ asset('ajax/url.js') }}"></script>
+    <script src="{{ asset('ajax/Settings/settings.js') }}"></script>
 @endpush

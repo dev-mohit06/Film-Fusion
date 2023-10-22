@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminControllers\DashboardController;
 use App\Http\Controllers\AdminControllers\MoviesController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\ReferralController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -17,17 +18,15 @@ Route::middleware('UserAuth')->group(function () {
     Route::prefix('/user')->group(function () {
         Route::get('/home', [MoviesController::class, 'returnMoviesAccordingUi'])->name('user.home');
 
-        Route::get('/watch-later', function () {
-            return view('with-login.watch-later');
-        })->name('user.watch-later');
+        Route::get('/watch-later', [UserController::class, 'getWatchLator'])->name('user.watch-later');
+        Route::get('/checkWatchLator', [UserController::class, 'checkWatchLator'])->name('user.play-page.checkWatchLator');
+        Route::get('/addWatchLator', [UserController::class, 'addWatchLator'])->name('user.play-page.addWatchLator');
 
-        Route::get('/favorite', function () {
-            return view('with-login.favorite');
-        })->name('user.favorite');
+        Route::get('/favorite', [UserController::class, 'getFavorite'])->name('user.favorite');
+        Route::get('/checkFavorite', [UserController::class, 'checkFavorite'])->name('user.play-page.checkFavorite');
+        Route::get('/addFavorite', [UserController::class, 'addFavorite'])->name('user.play-page.addFavorite');
 
-        Route::get('/history', function () {
-            return view('with-login.history');
-        })->name('user.history');
+        Route::get('/history', [AnalyticsController::class, 'getUserHistroy'])->name('user.history');
 
         Route::get('/settings', [UserController::class, 'returnSettings'])->name('user.settings');
         Route::get('/deleteUser', [UserController::class, 'deleteCurrentUser'])->name('user.settings.delete');
@@ -35,9 +34,11 @@ Route::middleware('UserAuth')->group(function () {
         Route::get('/play-page/{movie_id?}', [MoviesController::class, 'returnSpecificMovie'])->name('user.play-page');
         Route::get('/getAnalytics', [AnalyticsController::class, 'getAnalytics'])->name('user.play-page.getAnalytics');
         Route::get('/giveAnalytics', [AnalyticsController::class, 'giveAnalytics'])->name('user.play-page.giveAnalytics');
+        Route::get('/recordUserHistory', [AnalyticsController::class, 'recordUserHistory'])->name('user.play-page.recordUserHistory');
 
         Route::get('/edit-profile', [UserController::class, 'returnEditProfile'])->name('user.edit-profile');
         Route::post('/updateUser', [UserController::class, 'updateProfile'])->name('user.edit-profile.updateUser');
+        Route::get('/send-invitation', [ReferralController::class, 'sendInvitation'])->name('user.send-invitation');
     });
 
 
@@ -89,7 +90,7 @@ Route::middleware('UserAuth')->group(function () {
         Route::get('/analytics', function () {
             return view('admin.analytics');
         })->name('admin.analytics');
-        Route::get('/getAnalyticsRecords',[AnalyticsController::class,'loadAnalytics'])->name('admin.analytics.getAll');
+        Route::get('/getAnalyticsRecords', [AnalyticsController::class, 'loadAnalytics'])->name('admin.analytics.getAll');
 
         Route::get('/subscription-histroy', function () {
             return view('admin.subscription-histroy');
@@ -99,6 +100,7 @@ Route::middleware('UserAuth')->group(function () {
         Route::get('/refrel-histroy', function () {
             return view('admin.refrel-histroy');
         })->name('admin.refrel-histroy');
+        Route::get('/getAllRefrelHistroy', [ReferralController::class, 'getReferralTable'])->name('admin.refrel-histroy.getAll');
     });
 
 
@@ -113,13 +115,7 @@ Route::middleware('UserAuth')->group(function () {
 
     Route::get('/discount/{planId}', [PlanController::class, 'returnDiscountView'])->name('discount');
 
-    Route::get('/login/{refCode?}', function (string $refrelCode = null) {
-        if ($refrelCode == null) {
-            return view('login');
-        } else {
-            return view('login');
-        }
-    })->name('login');
+    Route::get('/login/{refCode?}', [ReferralController::class, 'verify'])->name('login');
 
     Route::get('/forget-password', function () {
         return view('forgot_password');

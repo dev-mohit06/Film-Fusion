@@ -25,40 +25,15 @@
                         <th> Referal Code </th>
                         <th> Created date </th>
                         <th> Status </th>
-                        <th> operations </th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>___mohit06</td>
-                        <td>FILMREF12</td>
-                        <td>20-3-2023</td>
-                        <td class="deactive">Referred</td>
-                        <td>
-                            <p class="status cancelled delete-btn pointer">
-                                Delete
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>poojan12</td>
-                        <td>FILMREF13</td>
-                        <td>20-3-2023</td>
-                        <td class="active">Unreferred</td>
-                        <td>
-                            <p class="status cancelled delete-btn pointer">
-                                Delete
-                            </p>
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody id="table-data"></tbody>
             </table>
         </section>
     </div>
     <!-- ========== End of Table ========== -->
 @endsection
 @push('scripts')
-    {{-- <script src="{{ asset('js/resulable/search.js') }}"></script> --}}
+    <script src="{{ asset('ajax/url.js') }}"></script>
+    <script src="{{ asset('ajax/Refrel/refrel.js') }}"></script>
 @endpush

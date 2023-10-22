@@ -183,4 +183,42 @@ class AnalyticsController extends Controller
             }
         }
     }
+
+    public function recordUserHistory(Request $request)
+    {
+
+        $user_id = $request->user_id;
+        $movie_id = $request->movie_id;
+
+        $is_exsist = DB::table('histories')->where('user_id', '=', $user_id)->where('movie_id', '=', $movie_id)->count();
+
+        if ($is_exsist) {
+            DB::table('histories')->where('user_id', '=', $user_id)->where('movie_id', '=', $movie_id)->update([
+                'watched_date' => now(),
+                'updated_at' => now(),
+            ]);
+        } else {
+            DB::table('histories')->insert([
+                'user_id' => $user_id,
+                'movie_id' => $movie_id,
+                'watched_date' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+    }
+
+    public function getUserHistroy()
+    {
+        $user_id = session()->get('id');
+
+        $records = DB::table('movies')
+            ->join('histories', 'movies.id', '=', 'histories.movie_id')
+            ->where('histories.user_id', $user_id) // Filter by user_id
+            ->orderBy('histories.watched_date', 'desc')
+            ->select('movies.*') // Select all columns from the "movies" table
+            ->get();
+
+        return view('with-login.history',['histroy' => $records,'movie_count' => $records->count()]);
+    }
 }

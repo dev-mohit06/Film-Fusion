@@ -258,8 +258,13 @@ class MoviesController extends Controller
             return redirect()->route('user.home');
         } else {
             $movie_data = DB::table('movies')->where('id', '=', $movie_id)->first();
+            $related_movie = DB::table('movies')->where('category', '=', $movie_data->category)->where('id', '!=', $movie_data->id)->get();
 
-            return view('with-login.play-page', ['movie_data' => $movie_data]);
+            if ($related_movie->count() == 0) {
+                $related_movie = DB::table('movies')->where('id', '!=', $movie_data->id)->take(4)->get();
+            }
+
+            return view('with-login.play-page', ['movie_data' => $movie_data, 'allMovies' => $related_movie]);
         }
     }
 }
