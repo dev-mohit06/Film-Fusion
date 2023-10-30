@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="{{ asset('css/reusable/loader.css') }}">
     {{-- Toast Notificaations CSS --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1358041507602339"
+     crossorigin="anonymous"></script>
+     
     @stack('styles')
 </head>
 
