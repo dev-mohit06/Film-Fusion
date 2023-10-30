@@ -17,6 +17,9 @@
     <!--=============== REMIX ICONS ===============-->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
 
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1358041507602339"
+     crossorigin="anonymous"></script>
+
     @stack('styles')
 </head>
 
