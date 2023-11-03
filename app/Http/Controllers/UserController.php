@@ -193,7 +193,8 @@ class UserController extends Controller
                 $planDetails = PlanController::getPlanData($request->plan);
                 $userDetails = DB::table('users')->where('email', '=', $request->email)->first();
                 $purchaseDate = Carbon::parse(now());
-                $expiredDate = $purchaseDate->addDay($planDetails->plan_duration * 30);
+                $tempPurchaseDate = Carbon::parse(now());
+                $expiredDate = $tempPurchaseDate->addDay($planDetails->plan_duration * 30);
 
                 // Insert the record of the subscription
                 DB::table('subscriptions')->insert([

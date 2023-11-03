@@ -2,10 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Mail\SendOffers;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserAuthMiddleware
@@ -41,6 +43,16 @@ class UserAuthMiddleware
                                     'is_active' => 0
                                 ]);
 
+                                $offers = DB::table('offers')->where('offer_status','=',1)->get();
+                            
+                                $mailData = [
+                                    'offers' => $offers,
+                                ];
+
+                                $userData = DB::table('users')->where('id','=',$user->id)->first();
+
+                                mail::to($userData->email)->send(new SendOffers($mailData));                             
+
                                 session()->put('subscription_status', 0);
                                 return redirect()->route('pricing');
                             }
@@ -60,7 +72,7 @@ class UserAuthMiddleware
                     'change-password',
                 ];
 
-                if($isSubscriberOrAdmin && $request->is('home')){
+                if ($isSubscriberOrAdmin && $request->is('home')) {
                     return redirect()->route('user.home');
                 }
 
@@ -92,7 +104,7 @@ class UserAuthMiddleware
             }
         } else {
 
-            if($request->is('admin/*') || $request->is('user/*')){
+            if ($request->is('admin/*') || $request->is('user/*')) {
                 return redirect()->route('login');
             }
 
