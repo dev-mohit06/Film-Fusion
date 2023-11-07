@@ -41,11 +41,13 @@ class UserController extends Controller
                     $referrer_preson_code = session()->get('referral_code');
                     $referrer_preson_active_subscription = DB::table('subscriptions')->where('user_id', '=', $referrer_preson_data->id)->where('is_active', '=', '1')->first();
 
-                    if ($referrer_preson_active_subscription) {
+                    if ($referrer_preson_active_subscription || $referrer_preson_data->role == 1) {
 
-                        DB::table('subscriptions')->where('user_id', '=', $referrer_preson_data->id)->where('is_active', '=', '1')->update([
-                            'expire_date' => Carbon::parse($referrer_preson_active_subscription->expire_date)->addDay(10),
-                        ]);
+                        if($referrer_preson_active_subscription){
+                            DB::table('subscriptions')->where('user_id', '=', $referrer_preson_data->id)->where('is_active', '=', '1')->update([
+                                'expire_date' => Carbon::parse($referrer_preson_active_subscription->expire_date)->addDay(10),
+                            ]);
+                        }
 
                         $current_user_data = DB::table('users')->where('email', '=', $request->email)->first();
 
