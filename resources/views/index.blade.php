@@ -28,7 +28,7 @@
                         <a href="#what" class="nav__link">What to do?</a>
                     </li>
                     <li class="nav__item">
-                        <a href="{{ route('login') }}" class="nav__link">Get started</a>
+                        <a href="{{ route('login') }}" class="nav__link">Gt started</a>
                     </li>
                 </ul>
 
